@@ -16,7 +16,7 @@
         <activity
             android:name=".controllers.activities.InitialActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/CopperInk">
+            android:theme="@style/CopperInk.Splash">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

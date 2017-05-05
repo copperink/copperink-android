@@ -1,11 +1,24 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Main application theme. -->
     <style name="CopperInk" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <!-- Without ActionBar -->
+    <style name="CopperInk.NoActionBar" parent="CopperInk">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- For Splash Screen -->
+    <style name="CopperInk.Splash" parent="CopperInk.NoActionBar">
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:colorBackground">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primary</item>
     </style>
 
 </resources>
