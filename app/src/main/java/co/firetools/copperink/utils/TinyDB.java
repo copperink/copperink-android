@@ -246,7 +246,17 @@ public class TinyDB {
      * @return String value at 'key' or "" (empty String) if key not found
      */
     public String getString(String key) {
-        return preferences.getString(key, "");
+        return getString(key, "");
+    }
+
+    /**
+     * Get String value from SharedPreferences at 'key'. If key not found, return ""
+     * @param key SharedPreferences key
+     * @param defaultValue the default value
+     * @return String value at 'key' or "" (empty String) if key not found
+     */
+    public String getString(String key, String defaultValue) {
+        return preferences.getString(key, defaultValue);
     }
 
     /**
