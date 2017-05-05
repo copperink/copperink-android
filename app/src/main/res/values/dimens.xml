@@ -2,8 +2,8 @@
 <resources>
     <integer name="splash_wait_time">1500</integer>
     <integer name="splash_animation_time">1000</integer>
+    
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-
 </resources>

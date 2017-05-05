@@ -2,6 +2,7 @@ package co.firetools.copperink.controllers.activities;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -32,6 +33,8 @@ public class InitialActivity extends AppCompatActivity {
 
         // Load existing user profile
         UserService.loadUser(context);
+
+        openMainActivity();
 
 
         // Wait determined time before showing login
@@ -71,5 +74,15 @@ public class InitialActivity extends AppCompatActivity {
         Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_up);
         login.startAnimation(slideDown);
         login.setVisibility(View.VISIBLE);
+    }
+
+
+    /**
+     * Opens MainActivity
+     */
+    private void openMainActivity() {
+        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }
