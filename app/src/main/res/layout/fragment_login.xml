@@ -1,4 +1,4 @@
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -6,73 +6,88 @@
     android:layout_height="wrap_content"
     tools:context="co.firetools.copperink.controllers.fragments.LoginFragment">
 
-
-    <EditText
-        android:id="@+id/name_field"
-        android:text=""
-        android:hint="Name"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/loader"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-
-    <EditText
-        android:id="@+id/email_field"
-        android:text=""
-        android:hint="Email"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-    <EditText
-        android:id="@+id/password_field"
-        android:text=""
-        android:hint="Password"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-    <EditText
-        android:id="@+id/confirmation_field"
-        android:text=""
-        android:hint="Password Confirmation"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/form_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:gravity="right|center"
+        android:orientation="vertical"
         >
 
-        <Button
-            android:id="@+id/switch_mode_button"
-            android:text="Create an Account"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginRight="15dp"
-            android:textSize="10sp"
-            android:gravity="right|center"
-            android:background="@null"
+        <EditText
+            android:id="@+id/name_field"
+            android:text=""
+            android:hint="Name"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
 
-        <Button
-            android:id="@+id/login_button"
-            android:text="Login"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+        <EditText
+            android:id="@+id/email_field"
+            android:text=""
+            android:hint="Email"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
+
+        <EditText
+            android:id="@+id/password_field"
+            android:text=""
+            android:hint="Password"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <EditText
+            android:id="@+id/confirmation_field"
+            android:text=""
+            android:hint="Password Confirmation"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="right|center"
+            >
+
+            <Button
+                android:id="@+id/switch_mode_button"
+                android:text="Create an Account"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="15dp"
+                android:textSize="10sp"
+                android:gravity="right|center"
+                android:background="@null"
+                />
+
+            <Button
+                android:id="@+id/login_button"
+                android:text="Login"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

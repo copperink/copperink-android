@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -15,7 +17,6 @@ import co.firetools.copperink.services.GlobalService;
 import co.firetools.copperink.services.UserService;
 
 public class InitialActivity extends AppCompatActivity {
-    private final static int SPLASH_WAIT = 2000; // ms
     private Context context;
 
     @Override
@@ -37,7 +38,8 @@ public class InitialActivity extends AppCompatActivity {
         // or going to next activity
         new AsyncTask<Void, Void, Void>() {
             protected Void doInBackground(Void... unused) {
-                SystemClock.sleep(SPLASH_WAIT);
+                int waitTime = context.getResources().getInteger(R.integer.splash_wait_time);
+                SystemClock.sleep(waitTime);
                 return null;
             }
 
@@ -60,11 +62,14 @@ public class InitialActivity extends AppCompatActivity {
         FrameLayout login = (FrameLayout) findViewById(R.id.loginView);
 
         // Animate the Logo
-        ObjectAnimator animator = ObjectAnimator.ofFloat(logo,"y", 150);
-        animator.setDuration(2000);
+        int animTime = context.getResources().getInteger(R.integer.splash_animation_time);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(logo,"y", 200);
+        animator.setDuration(animTime);
         animator.start();
 
         // Show the Login Fragment
+        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+        login.startAnimation(slideDown);
         login.setVisibility(View.VISIBLE);
     }
 }
