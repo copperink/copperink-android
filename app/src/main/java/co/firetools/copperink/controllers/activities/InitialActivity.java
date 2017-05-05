@@ -1,7 +1,9 @@
-package co.firetools.copperink;
+package co.firetools.copperink.controllers.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import co.firetools.copperink.R;
 
 public class InitialActivity extends AppCompatActivity {
 
