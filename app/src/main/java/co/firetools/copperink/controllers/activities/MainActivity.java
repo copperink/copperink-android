@@ -14,30 +14,28 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     ImageView logo;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        appbar = (AppBarLayout) findViewById(R.id.app_bar);
-        logo = (ImageView) findViewById(R.id.logo);
+
+        // Initialize Views
+        toolbar = (Toolbar)      findViewById(R.id.toolbar);
+        appbar  = (AppBarLayout) findViewById(R.id.app_bar);
+        logo    = (ImageView)    findViewById(R.id.logo);
+
+
+        // Configure Toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
 
+        // Resize logo according to scroll state
         attachOffsetListener();
 
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
+
 
 
     /**
@@ -48,25 +46,35 @@ public class MainActivity extends AppCompatActivity {
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             float MAX_LOGO_HEIGHT = getResources().getDimension(R.dimen.logo_height_max);
             float MIN_LOGO_HEIGHT = getResources().getDimension(R.dimen.logo_height_min);
+            float MAX_LOGO_MARGIN = getResources().getDimension(R.dimen.logo_margin_max);
+            float MIN_LOGO_MARGIN = getResources().getDimension(R.dimen.logo_margin_min);
 
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+                // Do calculations when Logo Layout Params are not busy,
+                // otherwise pollutes log with warnings
+                if (!logo.isInLayout()) {
 
-                // Get Maximum Scoll Range
-                int total = appBarLayout.getTotalScrollRange();
+                    // Get Maximum Scoll Range
+                    // This is positive while actual offset is negative
+                    int total = appBarLayout.getTotalScrollRange();
 
-                // Calculate scroll ratio from range
-                float scale  = (float) (total + offset) / total;
+                    // Calculate scroll ratio from range
+                    // This is 1 when fully opened, and 0 when fully closed
+                    float scale  = (float) (total + offset) / total;
 
-                // Calculate new height between min-max range
-                float height = MIN_LOGO_HEIGHT + ((MAX_LOGO_HEIGHT - MIN_LOGO_HEIGHT) * scale);
+                    // Calculate new height between min-max range
+                    float height = MIN_LOGO_HEIGHT + ((MAX_LOGO_HEIGHT - MIN_LOGO_HEIGHT) * scale);
 
-                // Apply new Layout Params
-                logo.requestLayout();
-                ViewGroup.LayoutParams logoParams = logo.getLayoutParams();
-                logoParams.height = (int) height;
-                logo.requestLayout();
-//                logo.setLayoutParams(logoParams);
+                    // Calculate new left-margin
+                    float margin = MIN_LOGO_MARGIN + ((MAX_LOGO_MARGIN - MIN_LOGO_MARGIN) * scale);
+
+                    // Apply new Layout Params
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) logo.getLayoutParams();
+                    params.leftMargin = (int) margin;
+                    params.height     = (int) height;
+                    logo.setLayoutParams(params);
+                }
             }
         });
     }
