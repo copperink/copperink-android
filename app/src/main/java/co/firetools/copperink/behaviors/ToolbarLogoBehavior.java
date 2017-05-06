@@ -1,4 +1,4 @@
-package co.firetools.copperink.controllers.behaviors;
+package co.firetools.copperink.behaviors;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
@@ -14,7 +14,7 @@ import co.firetools.copperink.services.GlobalService;
  * An Implementation of AppBarOffsetListener to listen for scrolls and
  * change the logo size in Toolbar accordingly
  */
-public class ToolbarLogoBehavior implements  AppBarLayout.OnOffsetChangedListener {
+public class ToolbarLogoBehavior implements AppBarLayout.OnOffsetChangedListener {
     private float MAX_LOGO_HEIGHT;
     private float MIN_LOGO_HEIGHT;
     private float MAX_LOGO_MARGIN;
@@ -44,7 +44,7 @@ public class ToolbarLogoBehavior implements  AppBarLayout.OnOffsetChangedListene
 
 
     /**
-     * The actuall OffSetListener callback that listens to appbar offset
+     * The actual offset listener callback that listens to appbar offset
      * changes and resizes the logo
      */
     @Override

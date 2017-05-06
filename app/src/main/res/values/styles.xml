@@ -5,7 +5,9 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="android:colorBackground">@color/bg</item>
     </style>
+
 
     <!-- Inverse Variant -->
     <style name="CopperInk.Inverse" parent="Theme.AppCompat">
@@ -15,14 +17,21 @@
         <item name="android:buttonStyle">@style/CopperInk.Inverse.Button</item>
     </style>
 
+
     <!-- Without ActionBar -->
-    <style name="CopperInk.NoActionBar" parent="CopperInk.Inverse">
+    <style name="CopperInk.NoActionBar" parent="CopperInk">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CopperInk.Inverse.NoActionBar" parent="CopperInk.Inverse">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
     <!-- For Splash Screen -->
-    <style name="CopperInk.Splash" parent="CopperInk.NoActionBar">
+    <style name="CopperInk.Splash" parent="CopperInk.Inverse.NoActionBar">
         <item name="colorPrimaryDark">@color/white</item>
         <item name="android:statusBarColor">@color/primary</item>
         <item name="android:colorBackground">@color/primary</item>

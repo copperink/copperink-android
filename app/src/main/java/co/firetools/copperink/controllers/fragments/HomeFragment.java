@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import co.firetools.copperink.R;
-import co.firetools.copperink.controllers.behaviors.ToolbarLogoBehavior;
+import co.firetools.copperink.behaviors.ToolbarLogoBehavior;
 
 public class HomeFragment extends Fragment {
     public HomeFragment() { }

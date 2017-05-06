@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="co.firetools.copperink.controllers.activities.MainActivity"
+    tools:context=".controllers.fragments.HomeFragment"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -25,14 +25,29 @@
             app:titleEnabled="false"
             >
 
+            <!-- Toolbar and Actions -->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/appbar_height_min"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/CopperInk.Toolbar.Menu"
-                />
+                >
 
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/accounts_button"
+                    android:layout_gravity="center|right"
+                    android:src="@drawable/icon_account"
+                    android:background="@null"
+                    android:layout_margin="10dp"
+                    android:onClick="accountButtonPressed"
+                    />
+            </android.support.v7.widget.Toolbar>
+
+
+            <!-- Logo -->
             <ImageView
                 android:id="@+id/logo"
                 android:src="@drawable/logotype"
@@ -45,10 +60,10 @@
                 android:layout_marginLeft="@dimen/logo_margin_max"
                 />
 
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
+
 
 </android.support.design.widget.CoordinatorLayout>
