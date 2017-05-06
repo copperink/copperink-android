@@ -2,8 +2,12 @@
 <resources>
     <integer name="splash_wait_time">1500</integer>
     <integer name="splash_animation_time">1000</integer>
-    
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="appbar_height_max">180dp</dimen>
+    <dimen name="appbar_height_min">60dp</dimen>
+
+    <dimen name="logo_width_max">200dp</dimen>
+    <dimen name="logo_height_max">80dp</dimen>
+    <dimen name="logo_height_min">50dp</dimen>
+
 </resources>

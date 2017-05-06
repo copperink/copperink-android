@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_height="@dimen/appbar_height_max"
         android:fitsSystemWindows="true"
         android:theme="@style/CopperInk.AppBarOverlay"
         >
@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false"
             >
@@ -29,28 +28,31 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/appbar_height_min"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/CopperInk.PopupOverlay"
                 />
 
 
             <ImageView
-                android:id="@+id/header_logo"
+                android:id="@+id/logo"
                 android:src="@drawable/logotype"
-                android:layout_width="200dp"
-                android:layout_height="80dp"
-                android:scaleType="fitCenter"
+                android:layout_width="@dimen/logo_width_max"
+                android:layout_height="@dimen/logo_height_max"
+                android:minHeight="@dimen/logo_height_min"
+                android:scaleType="fitStart"
                 android:layout_gravity="left|bottom"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0"
+                app:layout_collapseMode="pin"
                 />
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>
