@@ -1,54 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="co.firetools.copperink.controllers.activities.MainActivity"
-    >
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height_max"
-        android:fitsSystemWindows="true"
-        android:theme="@style/CopperInk.AppBarOverlay"
-        >
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:titleEnabled="false"
-            >
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/appbar_height_min"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/CopperInk.PopupOverlay"
-                />
-
-            <ImageView
-                android:id="@+id/logo"
-                android:src="@drawable/logotype"
-                android:layout_width="@dimen/logo_width_max"
-                android:layout_height="@dimen/logo_height_max"
-                android:minHeight="@dimen/logo_height_min"
-                android:scaleType="fitStart"
-                android:layout_gravity="left|bottom"
-                android:layout_marginBottom="@dimen/logo_margin_bottom"
-                android:layout_marginLeft="@dimen/logo_margin_max"
-                />
-
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_main" />
-
-</android.support.design.widget.CoordinatorLayout>
+    tools:context=".controllers.activities.MainActivity"
+    tools:layout="@layout/fragment_home"
+    />

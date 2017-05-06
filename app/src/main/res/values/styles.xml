@@ -35,9 +35,10 @@
         <item name="android:background">@drawable/button_inverse</item>
     </style>
 
-    <style name="CopperInk.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="CopperInk.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!-- Toolbar Styles -->
+    <style name="CopperInk.Toolbar"      parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="CopperInk.Toolbar.Menu" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>
