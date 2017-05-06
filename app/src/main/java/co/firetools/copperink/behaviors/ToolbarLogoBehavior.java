@@ -35,8 +35,8 @@ public class ToolbarLogoBehavior implements AppBarLayout.OnOffsetChangedListener
 
         MAX_LOGO_HEIGHT = context.getResources().getDimension(R.dimen.logo_height_max);
         MIN_LOGO_HEIGHT = context.getResources().getDimension(R.dimen.logo_height_min);
-        MAX_LOGO_MARGIN = context.getResources().getDimension(R.dimen.logo_margin_max);
-        MIN_LOGO_MARGIN = context.getResources().getDimension(R.dimen.logo_margin_min);
+        MAX_LOGO_MARGIN = context.getResources().getDimension(R.dimen.logo_margin_left_max);
+        MIN_LOGO_MARGIN = context.getResources().getDimension(R.dimen.logo_margin_left_min);
 
         this.logo = logo;
     }

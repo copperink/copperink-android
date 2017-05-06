@@ -2,14 +2,15 @@
 <resources>
     <integer name="splash_wait_time">1500</integer>
     <integer name="splash_animation_time">1000</integer>
+    <integer name="fragment_transition_time">200</integer>
 
-    <dimen name="appbar_height_max">180dp</dimen>
-    <dimen name="appbar_height_min">60dp</dimen>
+    <dimen name="toolbar_height_max">180dp</dimen>
+    <dimen name="toolbar_height_min">60dp</dimen>
 
     <dimen name="logo_width_max">200dp</dimen>
     <dimen name="logo_height_max">80dp</dimen>
     <dimen name="logo_height_min">45dp</dimen>
-    <dimen name="logo_margin_max">20dp</dimen>
-    <dimen name="logo_margin_min">15dp</dimen>
     <dimen name="logo_margin_bottom">12dp</dimen>
+    <dimen name="logo_margin_left_max">20dp</dimen>
+    <dimen name="logo_margin_left_min">15dp</dimen>
 </resources>

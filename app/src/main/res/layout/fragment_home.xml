@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".controllers.fragments.HomeFragment"
     >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height_max"
-        android:fitsSystemWindows="true"
+        android:layout_height="@dimen/toolbar_height_max"
         android:theme="@style/CopperInk.Toolbar"
         >
 
@@ -29,7 +27,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/appbar_height_min"
+                android:layout_height="@dimen/toolbar_height_min"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/CopperInk.Toolbar.Menu"
                 >
@@ -57,7 +55,7 @@
                 android:scaleType="fitStart"
                 android:layout_gravity="left|bottom"
                 android:layout_marginBottom="@dimen/logo_margin_bottom"
-                android:layout_marginLeft="@dimen/logo_margin_max"
+                android:layout_marginLeft="@dimen/logo_margin_left_max"
                 />
 
         </android.support.design.widget.CollapsingToolbarLayout>

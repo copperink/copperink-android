@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".controllers.fragments.AccountListFragment">
+
+    <item
+        android:id="@+id/action_add_account"
+        android:icon="@drawable/icon_add"
+        android:title="@string/title_fragment_add_account"
+        app:showAsAction="always"
+        />
+
+</menu>

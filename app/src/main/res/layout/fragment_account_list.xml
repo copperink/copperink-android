@@ -5,17 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".controllers.fragments.AccountListFragment">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
+        android:minHeight="@dimen/toolbar_height_min"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/title_fragment_accounts"
+        app:navigationIcon="?attr/homeAsUpIndicator"
         />
+
 </android.support.constraint.ConstraintLayout>
