@@ -2,6 +2,21 @@
     <string name="app_name">CopperInk</string>
     <string name="title_fragment_accounts">Accounts</string>
     <string name="title_fragment_add_account">Add Account</string>
+
+    <string-array name="facebook_read_permissions">
+        <item>user_photos</item>
+        <item>user_about_me</item>
+        <item>public_profile</item>
+    </string-array>
+
+    <string-array name="facebook_write_permissions">
+        <item>publish_actions</item>
+        <item>manage_pages</item>
+        <item>publish_pages</item>
+    </string-array>
+
+
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
