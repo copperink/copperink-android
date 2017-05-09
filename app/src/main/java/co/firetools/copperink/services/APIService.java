@@ -8,6 +8,10 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class APIService {
     private static final String BASE_URL    = "http://copperink.192.168.1.5.xip.io/api/v1";
     private static final String AUTH_HEADER = "X-AUTH-TOKEN";
@@ -23,6 +27,20 @@ public class APIService {
         ConnectivityManager cm = (ConnectivityManager) GlobalService.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+
+
+    /**
+     * Handles JSON Error Objects
+     */
+    public static void handleError(JSONObject errorObject) {
+        try {
+            JSONArray errors = errorObject.getJSONArray("errors");
+            GlobalService.showError(errors.join(","));
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
     }
 
 

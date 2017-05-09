@@ -19,4 +19,12 @@ public class GlobalService {
     public static void showToast(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
+
+
+    /**
+     * Show Error
+     */
+    public static void showError(String message) {
+        showToast("Error: " + message);
+    }
 }
