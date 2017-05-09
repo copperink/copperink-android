@@ -32,6 +32,17 @@ public class User {
     }
 
 
+
+    /**
+     * Getters
+     */
+    public String getID()    { return id;    }
+    public String getName()  { return name;  }
+    public String getEmail() { return email; }
+    public String getToken() { return token; }
+
+
+
     /**
      * Serializes the Account object into a
      * JSON String using the Jackson library

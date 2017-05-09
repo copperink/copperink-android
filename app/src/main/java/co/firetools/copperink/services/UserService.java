@@ -20,6 +20,15 @@ public class UserService {
     }
 
 
+
+    /**
+     * Get the Current User
+     */
+    public static User getUser() {
+        return user;
+    }
+
+
     /**
      * Loads JSON data from SharedPreferences using TinyDB
      * and then deserializes them to Account objects.
