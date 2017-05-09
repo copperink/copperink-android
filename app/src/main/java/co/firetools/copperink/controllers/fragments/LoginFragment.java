@@ -10,7 +10,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
 import co.firetools.copperink.R;
+import co.firetools.copperink.controllers.activities.InitialActivity;
+import co.firetools.copperink.services.APIService;
+import co.firetools.copperink.services.GlobalService;
+import co.firetools.copperink.services.UserService;
+import cz.msebera.android.httpclient.Header;
 
 
 public class LoginFragment extends Fragment {
@@ -56,7 +66,12 @@ public class LoginFragment extends Fragment {
         });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { doLogin(); }
+            public void onClick(View v) {
+                if (loginMode)
+                    doLogin();
+                else
+                    doSignup();
+            }
         });
 
         return root;
@@ -100,8 +115,66 @@ public class LoginFragment extends Fragment {
         }
     }
 
+
+    /**
+     * Login API Call
+     */
     private void doLogin() {
         startLoading(true);
+
+        RequestParams params = new RequestParams();
+        params.put("user[email]",    emailField.getText());
+        params.put("user[password]", passwordField.getText());
+
+        APIService.Basic.POST("/sessions/sign-in", params, new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
+                startLoading(false);
+                UserService.saveUser(user);
+                openMainActivity();
+            }
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
+                startLoading(false);
+                APIService.handleError(error);
+            }
+        });
+    }
+
+
+    /**
+     * Signup API Call
+     */
+    private void doSignup() {
+        startLoading(true);
+
+        if (!passwordField.getText().equals(confirmationField.getText())){
+            GlobalService.showError("Passwords do not match");
+            return;
+        }
+
+        RequestParams params = new RequestParams();
+        params.put("user[name]",     nameField.getText());
+        params.put("user[email]",    emailField.getText());
+        params.put("user[password]", passwordField.getText());
+
+        APIService.Basic.POST("/sessions/sign-up", params, new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
+                startLoading(false);
+                UserService.saveUser(user);
+                openMainActivity();
+            }
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
+                startLoading(false);
+                APIService.handleError(error);
+            }
+        });
+    }
+
+
+    /**
+     * Continue to MainActivity
+     */
+    private void openMainActivity() {
+        ((InitialActivity) getActivity()).openMainActivity();
     }
 
 }

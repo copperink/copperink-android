@@ -32,9 +32,7 @@ public class InitialActivity extends AppCompatActivity {
         GlobalService.setContext(context);
 
         // Load existing user profile
-        UserService.loadUser(context);
-
-        openMainActivity();
+        UserService.loadUser();
 
 
         // Wait determined time before showing login
@@ -48,7 +46,7 @@ public class InitialActivity extends AppCompatActivity {
 
             protected void onPostExecute(Void unused) {
                 if (UserService.userExists())
-                    GlobalService.showToast("User Account Exists");
+                    openMainActivity();
                 else
                     showLoginView();
             }
@@ -80,7 +78,7 @@ public class InitialActivity extends AppCompatActivity {
     /**
      * Opens MainActivity
      */
-    private void openMainActivity() {
+    public void openMainActivity() {
         Intent i = new Intent(getBaseContext(), MainActivity.class);
         startActivity(i);
         finish();
