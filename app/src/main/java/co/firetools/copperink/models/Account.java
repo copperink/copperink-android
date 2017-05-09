@@ -12,8 +12,8 @@ import java.io.IOException;
 public class Account {
     private String id;
     private String name;
+    private String type;
     private String imageUrl;
-    private Type   type;
 
 
     /**
@@ -21,24 +21,24 @@ public class Account {
      */
     @JsonCreator
     public Account(
-            @JsonProperty("id")         String id,
-            @JsonProperty("name")       String name,
-            @JsonProperty("image_url")  String imageUrl,
-            @JsonProperty("type")       Type   type) {
+            @JsonProperty("id")    String id,
+            @JsonProperty("name")  String name,
+            @JsonProperty("type")  String type,
+            @JsonProperty("image") String imageUrl) {
         this.id       = id;
         this.name     = name;
-        this.imageUrl = imageUrl;
         this.type     = type;
+        this.imageUrl = imageUrl;
     }
-
 
 
     /**
-     * Account Type Enumerations
+     * Getters
      */
-    private enum Type {
-        @JsonProperty("facebook") Facebook
-    }
+    public String getID()       { return id;       }
+    public String getName()     { return name;     }
+    public String getType()     { return type;     }
+    public String getImageUrl() { return imageUrl; }
 
 
 
@@ -50,9 +50,9 @@ public class Account {
         // Serialize using private/public fields only,
         // ignore everything else (Setters, Getters, etc.)
         return new ObjectMapper()
-                .setVisibility(PropertyAccessor.ALL,   JsonAutoDetect.Visibility.NONE)
-                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-                .writeValueAsString(account);
+            .setVisibility(PropertyAccessor.ALL,   JsonAutoDetect.Visibility.NONE)
+            .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .writeValueAsString(account);
     }
 
 

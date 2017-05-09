@@ -20,6 +20,7 @@ import java.util.List;
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.fragments.AccountListFragment;
 import co.firetools.copperink.controllers.fragments.HomeFragment;
+import co.firetools.copperink.db.DB;
 import co.firetools.copperink.services.GlobalService;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
             .replace(R.id.container, new HomeFragment())
             .commit();
 
+
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        Account acc = new Account("a", "b", "c", "d");
+//        db.insert(DBContract.AccountTable.TABLE_NAME, null, DBContract.AccountTable.contentValues(acc));
+
+//        try {
+//            SQLiteDatabase db = dbHelper.getReadableDatabase();
+//            for (Account acc : DBContract.AccountTable.all(db))
+//                Log.d("ACCOUNT", Account.serialize(acc));
+//        } catch (JsonProcessingException je) {
+//            je.printStackTrace();
+//        }
 
         // Set up Facebook Callbacks
         setFacebookCallbacks();
@@ -128,6 +141,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         facebookCallback.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+    /**
+     * Close Database connections when app closes
+     */
+    @Override
+    protected void onDestroy() {
+        DB.close();
+        super.onDestroy();
     }
 
 }
