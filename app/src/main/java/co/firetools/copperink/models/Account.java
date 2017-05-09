@@ -9,59 +9,58 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class User {
+public class Account {
     private String id;
     private String name;
-    private String email;
-    private String token;
+    private String imageUrl;
+    private Type   type;
 
 
     /**
-     * User Constructor
+     * Account Constructor
      */
     @JsonCreator
-    public User(
-        @JsonProperty("id")    String id,
-        @JsonProperty("name")  String name,
-        @JsonProperty("email") String email,
-        @JsonProperty("token") String token) {
-            this.id    = id;
-            this.name  = name;
-            this.email = email;
-            this.token = token;
+    public Account(
+            @JsonProperty("id")         String id,
+            @JsonProperty("name")       String name,
+            @JsonProperty("image_url")  String imageUrl,
+            @JsonProperty("type")       Type   type) {
+        this.id       = id;
+        this.name     = name;
+        this.imageUrl = imageUrl;
+        this.type     = type;
     }
 
 
 
     /**
-     * Getters
+     * Account Type Enumerations
      */
-    public String getID()    { return id;    }
-    public String getName()  { return name;  }
-    public String getEmail() { return email; }
-    public String getToken() { return token; }
+    private enum Type {
+        @JsonProperty("facebook") Facebook
+    }
 
 
 
     /**
-     * Serializes the User object into a
+     * Serializes the Account object into a
      * JSON String using the Jackson library
      */
-    public static String serialize(User user) throws JsonProcessingException {
+    public static String serialize(Account account) throws JsonProcessingException {
         // Serialize using private/public fields only,
         // ignore everything else (Setters, Getters, etc.)
         return new ObjectMapper()
                 .setVisibility(PropertyAccessor.ALL,   JsonAutoDetect.Visibility.NONE)
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-                .writeValueAsString(user);
+                .writeValueAsString(account);
     }
 
 
     /**
-     * Deserializes JSON string back into an User
+     * Deserializes JSON string back into an Account
      * object using the Jackson library
      */
-    public static User deserialize(String json) throws IOException {
-        return new ObjectMapper().readValue(json, User.class);
+    public static Account deserialize(String json) throws IOException {
+        return new ObjectMapper().readValue(json, Account.class);
     }
 }

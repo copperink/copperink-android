@@ -22,7 +22,6 @@ import co.firetools.copperink.services.GlobalService;
 import co.firetools.copperink.services.UserService;
 import cz.msebera.android.httpclient.Header;
 
-
 public class LoginFragment extends Fragment {
     public LoginFragment() { }
 
@@ -56,7 +55,7 @@ public class LoginFragment extends Fragment {
         loginButton       = (Button)       root.findViewById(R.id.login_button);
         switchMode        = (Button)       root.findViewById(R.id.switch_mode_button);
         loader            = (ProgressBar)  root.findViewById(R.id.loader);
-        formView         = (LinearLayout) root.findViewById(R.id.form_view);
+        formView          = (LinearLayout) root.findViewById(R.id.form_view);
 
         toggleMode(true);
         startLoading(false);
