@@ -13,4 +13,9 @@
     <dimen name="logo_margin_bottom">12dp</dimen>
     <dimen name="logo_margin_left_max">20dp</dimen>
     <dimen name="logo_margin_left_min">15dp</dimen>
+
+    <dimen name="account_row_height">80dp</dimen>
+    <dimen name="account_image_size">60dp</dimen>
+    <dimen name="account_margin">15dp</dimen>
+    <dimen name="account_name_text_size">18sp</dimen>
 </resources>
