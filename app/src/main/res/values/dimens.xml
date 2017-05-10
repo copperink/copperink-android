@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="splash_wait_time">1500</integer>
-    <integer name="splash_animation_time">1000</integer>
+    <integer name="splash_animation_time">700</integer>
     <integer name="fragment_transition_time">200</integer>
 
     <dimen name="toolbar_height_max">180dp</dimen>

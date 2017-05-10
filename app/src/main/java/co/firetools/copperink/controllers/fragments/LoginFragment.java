@@ -106,6 +106,7 @@ public class LoginFragment extends Fragment {
      */
     private void startLoading(boolean loading) {
         if (loading) {
+            GlobalService.hideKeyboard(getActivity());
             formView.setVisibility(View.GONE);
             loader.setVisibility(View.VISIBLE);
         } else {
@@ -129,7 +130,13 @@ public class LoginFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
                 startLoading(false);
                 UserService.saveUser(user);
-                openMainActivity();
+
+                APIService.fetchAccounts(new Runnable() {
+                    @Override
+                    public void run() {
+                        openMainActivity();
+                    }
+                });
             }
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                 startLoading(false);

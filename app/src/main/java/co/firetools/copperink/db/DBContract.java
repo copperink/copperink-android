@@ -43,15 +43,19 @@ public final class DBContract {
             return values;
         }
 
+        public static void deleteAll(SQLiteDatabase db) {
+            db.delete(TABLE_NAME, null, null);
+        }
+
         public static ArrayList<Account> all(SQLiteDatabase db) {
             Cursor cursor = db.query(
-                TABLE_NAME,                     // The table to query
-                new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_IMAGE, COLUMN_TYPE },                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                 // The sort order
+                TABLE_NAME,
+                new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_IMAGE, COLUMN_TYPE },
+                null,         // The columns for the WHERE clause
+                null,         // The values for the WHERE clause
+                null,         // don't group the rows
+                null,         // don't filter by row groups
+                null          // The sort order
             );
 
             ArrayList<Account> accounts = new ArrayList<>();
