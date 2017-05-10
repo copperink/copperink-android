@@ -4,12 +4,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import co.firetools.copperink.db.DB;
 import co.firetools.copperink.models.User;
 import co.firetools.copperink.utils.TinyDB;
 
 public class UserService {
     private static final String KEY_USER = "CopperUser";
-    private static TinyDB db;
+    private static TinyDB store;
     private static User user;
 
 
@@ -36,7 +37,7 @@ public class UserService {
      * Generates their Twitter objects as well
      */
     public static void loadUser() {
-        String userString = getDB().getString(KEY_USER, null);
+        String userString = getStore().getString(KEY_USER, null);
 
         user = null;
 
@@ -57,25 +58,27 @@ public class UserService {
         try {
             String userString = userObject.toString();
             user = User.deserialize(userString);
-            getDB().putString(KEY_USER, userString);
+            getStore().putString(KEY_USER, userString);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
 
-    // TODO:
-    // Add deleteUser method for logout
+    public static void destroyUser() {
+        DB.reset();
+        getStore().remove(KEY_USER);
+    }
 
 
     /**
      * Get a TinyDB instance
      */
-    private static TinyDB getDB() {
-        if (db == null)
-            db = new TinyDB(GlobalService.getContext());
+    private static TinyDB getStore() {
+        if (store == null)
+            store = new TinyDB(GlobalService.getContext());
 
-        return db;
+        return store;
     }
 
 }

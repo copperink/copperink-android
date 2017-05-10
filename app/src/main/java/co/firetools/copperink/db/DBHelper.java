@@ -25,9 +25,8 @@ public class DBHelper extends SQLiteOpenHelper {
      * onCreate Callback
      */
     public void onCreate(SQLiteDatabase db) {
-        createTable(db, DBContract.AccountTable.TABLE_NAME, DBContract.AccountTable.FIELDS);
+        createDatabase(db);
     }
-
 
 
     /**
@@ -37,10 +36,8 @@ public class DBHelper extends SQLiteOpenHelper {
      * Don't destroy existing data
      */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        destroyTable(db, DBContract.AccountTable.TABLE_NAME);
-        onCreate(db);
+        resetDatabase(db);
     }
-
 
 
     /**
@@ -48,6 +45,26 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+
+
+    // -------
+
+
+    /**
+     * Helper to Create DB
+     */
+    public static void createDatabase(SQLiteDatabase db) {
+        createTable(db, DBContract.AccountTable.TABLE_NAME, DBContract.AccountTable.FIELDS);
+    }
+
+    /**
+     * Helper to Reset DB
+     */
+    public static void resetDatabase(SQLiteDatabase db) {
+        destroyTable(db, DBContract.AccountTable.TABLE_NAME);
+        createDatabase(db);
     }
 
 
@@ -65,7 +82,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(command);
     }
-
 
 
     /**

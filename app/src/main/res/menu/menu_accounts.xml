@@ -10,4 +10,11 @@
         app:showAsAction="always"
         />
 
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/icon_exit"
+        android:title="@string/title_menu_logout"
+        app:showAsAction="never"
+        />
+
 </menu>

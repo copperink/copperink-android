@@ -22,6 +22,7 @@ import co.firetools.copperink.controllers.fragments.AccountListFragment;
 import co.firetools.copperink.controllers.fragments.HomeFragment;
 import co.firetools.copperink.db.DB;
 import co.firetools.copperink.services.GlobalService;
+import co.firetools.copperink.services.UserService;
 
 public class MainActivity extends AppCompatActivity {
     CallbackManager facebookCallback;
@@ -96,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
                 GlobalService.showToast("Adding Account");
                 List<String> permissions = Arrays.asList(getResources().getStringArray(R.array.facebook_write_permissions));
                 LoginManager.getInstance().logInWithPublishPermissions(this, permissions);
+
+
+            // Logout Button was pressed
+            case R.id.action_logout:
+                UserService.destroyUser();
+                Intent i = new Intent(this, InitialActivity.class);
+                startActivity(i);
+                finish();
+
 
             default:
                 return super.onOptionsItemSelected(item);

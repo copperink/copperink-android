@@ -27,6 +27,15 @@ public class DB {
 
 
     /**
+     * Reset DB
+     */
+    public static void reset() {
+        helper.resetDatabase(getWritable());
+
+    }
+
+
+    /**
      * Closes the DB connection
      */
     public static void close() {

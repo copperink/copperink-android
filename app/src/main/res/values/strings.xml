@@ -2,6 +2,7 @@
     <string name="app_name">CopperInk</string>
     <string name="title_fragment_accounts">Accounts</string>
     <string name="title_fragment_add_account">Add Account</string>
+    <string name="title_menu_logout">Log Out</string>
 
     <string-array name="facebook_read_permissions">
         <item>user_photos</item>
