@@ -10,10 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.login.LoginManager;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.adapters.AccountAdapter;
@@ -70,9 +75,34 @@ public class AccountListFragment extends Fragment {
 
 
 
+    /**
+     * Render Menu Actions
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_accounts, menu);
         super.onCreateOptionsMenu(menu,inflater);
+    }
+
+
+
+    /**
+     * Handle Menu Options in Toolbar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Add Account Button was pressed
+            // So initiate facebook login process
+            case R.id.action_add_account:
+                List<String> permissions = Arrays.asList(getResources().getStringArray(R.array.facebook_write_permissions));
+                LoginManager.getInstance().logInWithPublishPermissions(activity, permissions);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

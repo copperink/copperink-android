@@ -22,6 +22,8 @@ import co.firetools.copperink.db.DBContract;
 import co.firetools.copperink.models.Account;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class APIService {
     private static final String BASE_URL     = "http://copperink.192.168.1.5.xip.io/api/v1";
@@ -89,7 +91,9 @@ public class APIService {
      */
     private static StringEntity prepareJSONParams(JSONObject json) {
         try {
-            return new StringEntity(json.toString());
+            StringEntity entity = new StringEntity(json.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, CONTENT_TYPE));
+            return entity;
         } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
             return null;
@@ -113,12 +117,10 @@ public class APIService {
      */
     public static class Basic {
         public static void GET(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-//            setContentType();
             client.get(getAbsoluteURL(path), params, responseHandler);
         }
 
         public static void POST(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-//            setContentType();
             client.post(getAbsoluteURL(path), params, responseHandler);
         }
 

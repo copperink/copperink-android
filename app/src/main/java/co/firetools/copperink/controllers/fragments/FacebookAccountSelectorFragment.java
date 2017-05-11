@@ -175,6 +175,7 @@ public class FacebookAccountSelectorFragment extends Fragment {
             // Done Button was pressed
             case R.id.action_done:
                 saveSelectedAccounts();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

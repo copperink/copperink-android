@@ -2,9 +2,9 @@ package co.firetools.copperink.controllers.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -13,9 +13,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
-import java.util.Arrays;
-import java.util.List;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.fragments.AccountListFragment;
@@ -44,9 +41,20 @@ public class MainActivity extends AppCompatActivity {
         // Set up Facebook Callbacks
         setFacebookCallbacks();
 
+    }
 
-        openFacebookAccountSelector();
 
+
+    /**
+     * Helper method to push fragments on stack
+     */
+    public void pushFragment(Fragment fragment) {
+        getSupportFragmentManager()
+            .beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.exit_to_right, R.anim.enter_from_left)
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit();
     }
 
 
@@ -55,29 +63,9 @@ public class MainActivity extends AppCompatActivity {
      * Account Button click callback
      */
     public void accountButtonPressed(View v) {
-        AccountListFragment af = new AccountListFragment();
-
-        getSupportFragmentManager()
-            .beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.exit_to_right, R.anim.enter_from_left)
-            .replace(R.id.container, af)
-            .addToBackStack(null)
-            .commit();
+        pushFragment(new AccountListFragment());
     }
 
-
-    /**
-     * Open Facebook Account Selector
-     */
-    private void openFacebookAccountSelector(String token){
-        FacebookAccountSelectorFragment fasf = FacebookAccountSelectorFragment.create(token);
-        getSupportFragmentManager()
-            .beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.exit_to_right, R.anim.enter_from_left)
-            .replace(R.id.container, fasf)
-            .addToBackStack(null)
-            .commit();
-    }
 
 
 
@@ -97,20 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
 
-            // Add Account Button was pressed
-            // So initiate facebook login process
-            case R.id.action_add_account:
-                GlobalService.showToast("Adding Account");
-                List<String> permissions = Arrays.asList(getResources().getStringArray(R.array.facebook_write_permissions));
-                LoginManager.getInstance().logInWithPublishPermissions(this, permissions);
-
-
             // Logout Button was pressed
             case R.id.action_logout:
                 UserService.destroyUser();
                 Intent i = new Intent(this, InitialActivity.class);
                 startActivity(i);
                 finish();
+                return true;
 
 
             default:
@@ -132,8 +113,10 @@ public class MainActivity extends AppCompatActivity {
             new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
-                    Log.d("Success", "Login");
-                    Log.d("FACEBOOK DATA", loginResult.getAccessToken().getToken());
+                    String token = loginResult.getAccessToken().getToken();
+
+                    // Open Facebook Account Selector
+                    pushFragment(FacebookAccountSelectorFragment.create(token));
                 }
 
                 @Override
