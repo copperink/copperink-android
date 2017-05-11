@@ -9,15 +9,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import co.firetools.copperink.models.Account;
+import co.firetools.copperink.models.Post;
 
 public final class DBContract {
-    private static final String TYPE_STRING = "TEXT";
+    static final String TYPE_PRIMARY = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String TYPE_STRING  = "TEXT";
+    private static final String TYPE_NUMBER  = "INTEGER";
+    private static final String TYPE_BOOLEAN = "INTEGER DEFAULT 0";
     private DBContract() {}
 
 
 
     /**
-     * Account Table Details and Database Columns
+     * Account Table Details and Columns
      */
     public static class AccountTable implements BaseColumns {
         public  static final String TABLE_NAME   = "accounts";
@@ -74,4 +78,51 @@ public final class DBContract {
             return accounts;
         }
     }
+
+    
+
+    /**
+     * Post Table Details and Columns
+     */
+    public static class PostTable implements BaseColumns {
+        public  static final String TABLE_NAME        = "posts";
+        private static final String COLUMN_ID         = "id";
+        private static final String COLUMN_STATUS     = "status";
+        private static final String COLUMN_CONTENT    = "content";
+        private static final String COLUMN_IMAGE      = "image_url";
+        private static final String COLUMN_POST_AT    = "post_at";
+        private static final String COLUMN_SYNCED     = "synced";
+        private static final String COLUMN_ACCOUNT_ID = "account_id";
+        private static final String COLUMN_AUTHOR_ID  = "author_id";
+
+
+        public static final HashMap<String, String> FIELDS =
+            new HashMap<String, String>() {{
+                put(COLUMN_ID,         TYPE_STRING);
+                put(COLUMN_STATUS,     TYPE_STRING);
+                put(COLUMN_CONTENT,    TYPE_STRING);
+                put(COLUMN_IMAGE,      TYPE_STRING);
+                put(COLUMN_ACCOUNT_ID, TYPE_STRING);
+                put(COLUMN_AUTHOR_ID,  TYPE_STRING);
+                put(COLUMN_POST_AT,    TYPE_NUMBER);
+                put(COLUMN_SYNCED,     TYPE_BOOLEAN);
+            }};
+
+
+        public static ContentValues contentValues(Post post) {
+            ContentValues values = new ContentValues();
+
+            values.put(COLUMN_ID,          post.getID());
+            values.put(COLUMN_STATUS,      post.getStatus());
+            values.put(COLUMN_CONTENT,     post.getContent());
+            values.put(COLUMN_IMAGE,       post.getImageUrl());
+            values.put(COLUMN_ACCOUNT_ID,  post.getAccountID());
+            values.put(COLUMN_AUTHOR_ID,   post.getAuthorID());
+            values.put(COLUMN_POST_AT,     post.getPostAt());
+            values.put(COLUMN_SYNCED,      post.isSynced());
+
+            return values;
+        }
+    }
+
 }

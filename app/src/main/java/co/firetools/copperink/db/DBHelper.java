@@ -73,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Helper to create a table
      */
     private static void createTable(SQLiteDatabase db, String tableName, HashMap<String, String> fields) {
-        String command = "CREATE TABLE " + tableName + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT";
+        String command = "CREATE TABLE " + tableName + " ( _id " + DBContract.TYPE_PRIMARY;
 
         for (Map.Entry<String, String> entry : fields.entrySet())
             command = command + ", " + entry.getKey() + " " + entry.getValue();
