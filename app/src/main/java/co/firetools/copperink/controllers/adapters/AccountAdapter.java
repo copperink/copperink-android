@@ -14,7 +14,7 @@ import co.firetools.copperink.models.Account;
 import co.firetools.copperink.services.GlobalService;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
-    List<Account> accounts;
+    private List<Account> accounts;
 
 
     /**
@@ -56,7 +56,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
      */
     @Override
     public void onBindViewHolder(final ViewHolder vh, int position) {
-        final Account account = accounts.get(position);
+        Account account = accounts.get(position);
         vh.name.setText(account.getName());
         GlobalService.setImage(vh.image, account.getImageUrl());
     }

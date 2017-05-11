@@ -128,12 +128,12 @@ public class LoginFragment extends Fragment {
 
         APIService.Basic.POST("/sessions/sign-in", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
-                startLoading(false);
                 UserService.saveUser(user);
 
                 APIService.fetchAccounts(new Runnable() {
                     @Override
                     public void run() {
+                        startLoading(false);
                         openMainActivity();
                     }
                 });

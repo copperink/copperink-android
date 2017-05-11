@@ -19,6 +19,7 @@ import java.util.List;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.fragments.AccountListFragment;
+import co.firetools.copperink.controllers.fragments.FacebookAccountSelectorFragment;
 import co.firetools.copperink.controllers.fragments.HomeFragment;
 import co.firetools.copperink.db.DB;
 import co.firetools.copperink.services.GlobalService;
@@ -40,20 +41,11 @@ public class MainActivity extends AppCompatActivity {
             .commit();
 
 
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        Account acc = new Account("a", "b", "c", "d");
-//        db.insert(DBContract.AccountTable.TABLE_NAME, null, DBContract.AccountTable.contentValues(acc));
-
-//        try {
-//            SQLiteDatabase db = dbHelper.getReadableDatabase();
-//            for (Account acc : DBContract.AccountTable.all(db))
-//                Log.d("ACCOUNT", Account.serialize(acc));
-//        } catch (JsonProcessingException je) {
-//            je.printStackTrace();
-//        }
-
         // Set up Facebook Callbacks
         setFacebookCallbacks();
+
+
+        openFacebookAccountSelector();
 
     }
 
@@ -69,6 +61,20 @@ public class MainActivity extends AppCompatActivity {
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.exit_to_right, R.anim.enter_from_left)
             .replace(R.id.container, af)
+            .addToBackStack(null)
+            .commit();
+    }
+
+
+    /**
+     * Open Facebook Account Selector
+     */
+    private void openFacebookAccountSelector(String token){
+        FacebookAccountSelectorFragment fasf = FacebookAccountSelectorFragment.create(token);
+        getSupportFragmentManager()
+            .beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.exit_to_right, R.anim.enter_from_left)
+            .replace(R.id.container, fasf)
             .addToBackStack(null)
             .commit();
     }

@@ -15,16 +15,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import co.firetools.copperink.db.DB;
 import co.firetools.copperink.db.DBContract;
 import co.firetools.copperink.models.Account;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class APIService {
-    private static final String BASE_URL    = "http://copperink.192.168.1.5.xip.io/api/v1";
-    private static final String AUTH_HEADER = "X-AUTH-TOKEN";
-    private static AsyncHttpClient client   = new AsyncHttpClient();
+    private static final String BASE_URL     = "http://copperink.192.168.1.5.xip.io/api/v1";
+    private static final String AUTH_HEADER  = "X-AUTH-TOKEN";
+    private static final String CONTENT_TYPE = "application/json";
+    private static AsyncHttpClient client    = new AsyncHttpClient();
 
 
     /**
@@ -81,6 +84,19 @@ public class APIService {
     }
 
 
+    /**
+     * Prepares JSON Params for Web Request
+     */
+    private static StringEntity prepareJSONParams(JSONObject json) {
+        try {
+            return new StringEntity(json.toString());
+        } catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     /**
      * Forms complete URL for calls
@@ -97,11 +113,17 @@ public class APIService {
      */
     public static class Basic {
         public static void GET(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+//            setContentType();
             client.get(getAbsoluteURL(path), params, responseHandler);
         }
 
         public static void POST(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+//            setContentType();
             client.post(getAbsoluteURL(path), params, responseHandler);
+        }
+
+        public static void jsonPOST(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
+            client.post(GlobalService.getContext(), getAbsoluteURL(path), prepareJSONParams(json), CONTENT_TYPE, responseHandler);
         }
     }
 
@@ -123,6 +145,11 @@ public class APIService {
         public static void POST(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
             authorizeClient();
             Basic.POST(path, params, responseHandler);
+        }
+
+        public static void jsonPOST(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
+            authorizeClient();
+            Basic.jsonPOST(path, json, responseHandler);
         }
 
         private static void authorizeClient() {

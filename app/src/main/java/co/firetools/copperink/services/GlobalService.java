@@ -2,6 +2,7 @@ package co.firetools.copperink.services;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -12,7 +13,16 @@ import com.squareup.picasso.Picasso;
 import co.firetools.copperink.R;
 
 public class GlobalService {
+    private static final String TAG = "CopperInk";
     private static Context context;
+
+    /**
+     * Custom Logger wrapper
+     */
+    public static void log(String text) {
+        Log.d(TAG, text);
+    }
+
 
     /**
      * Get/Set Application context from anywhere in the app
@@ -26,12 +36,13 @@ public class GlobalService {
      * with default settings
      */
     public static void setImage(ImageView iv, String url) {
-        Picasso
-            .with(iv.getContext())
-            .load(url)
-            .placeholder(R.color.primary)
-            .noFade()
-            .into(iv);
+        if (iv != null && url != null && !url.isEmpty())
+            Picasso
+                .with(iv.getContext())
+                .load(url)
+                .placeholder(R.color.primary)
+                .noFade()
+                .into(iv);
     }
 
 

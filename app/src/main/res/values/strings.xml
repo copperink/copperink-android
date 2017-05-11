@@ -2,6 +2,8 @@
     <string name="app_name">CopperInk</string>
     <string name="title_fragment_accounts">Accounts</string>
     <string name="title_fragment_add_account">Add Account</string>
+    <string name="title_fragment_facebook_selector">Select Accounts</string>
+    <string name="title_menu_done">Done</string>
     <string name="title_menu_logout">Log Out</string>
 
     <string-array name="facebook_read_permissions">
@@ -15,7 +17,6 @@
         <item>manage_pages</item>
         <item>publish_pages</item>
     </string-array>
-
 
 
     <string name="large_text">
