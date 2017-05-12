@@ -17,12 +17,14 @@ public class DBQuery {
     }
 
 
+
     /**
      * Delete all rows for a contract
      */
     public static void deleteAll(Model.Contract contract) {
         DB.getWritable().delete(contract.getTableName(), null, null);
     }
+
 
 
     /**
@@ -37,12 +39,16 @@ public class DBQuery {
     }
 
 
+
     /**
      * Get First Row
      */
     public static Model first(Model.Contract contract) {
+        return first(contract, getReadCursor(contract));
+    }
+
+    public static Model first(Model.Contract contract, Cursor cursor) {
         Model model = null;
-        Cursor cursor = getReadCursor(contract);
 
         if (cursor != null && cursor.moveToFirst()) {
             model = contract.toModel(cursor);
@@ -51,6 +57,17 @@ public class DBQuery {
 
         return model;
     }
+
+
+
+    /**
+     * Find by ID
+     */
+    public static Model findBy(Model.Contract contract, String column, String value) {
+        Cursor cursor = getReadCursor(contract, column + " = ", new String[] { value });
+        return first(contract, cursor);
+    }
+
 
 
     /**
@@ -68,15 +85,20 @@ public class DBQuery {
     }
 
 
+
     /**
      * Get a cursor with all columns for a DB and contract
      */
     private static Cursor getReadCursor(Model.Contract contract) {
+        return getReadCursor(contract, null, null);
+    }
+
+    private static Cursor getReadCursor(Model.Contract contract, String whereSelector, String[] whereValues) {
         return DB.getReadable().query(
             contract.getTableName(), // Table Name
             new String[] { "*" },    // Get all Columns
-            null,                    // The columns for the WHERE clause
-            null,                    // The values for the WHERE clause
+            whereSelector,           // The columns for the WHERE clause
+            whereValues,             // The values for the WHERE clause
             null,                    // don't group the rows
             null,                    // don't filter by row groups
             null                     // The sort order

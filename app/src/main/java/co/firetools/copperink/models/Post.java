@@ -3,10 +3,13 @@ package co.firetools.copperink.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import co.firetools.copperink.behaviors.Model;
+import co.firetools.copperink.db.DBContract;
 import co.firetools.copperink.services.UserService;
 
-public class Post {
+public class Post implements Model {
     public final static String UNSYNCED_ID = "__unsynced__";
+    public final static long   DEFAULT_OID = -1;
 
     private String  id;
     private String  status;
@@ -14,6 +17,7 @@ public class Post {
     private String  accountId;
     private String  authorId;
     private String  imageUrl;
+    private long    oid;
     private long    postAt;
     private boolean synced;
 
@@ -30,14 +34,7 @@ public class Post {
             @JsonProperty("account_id") String  accountId,
             @JsonProperty("image_url")  String  imageUrl,
             @JsonProperty("post_at")    long    postAt) {
-        this.id        = id;
-        this.status    = status;
-        this.content   = content;
-        this.authorId  = authorId;
-        this.accountId = accountId;
-        this.imageUrl  = imageUrl;
-        this.postAt    = postAt;
-        this.synced    = true;
+        this(DEFAULT_OID, id, status, content, authorId, accountId, imageUrl, postAt, true);
     }
 
 
@@ -45,14 +42,23 @@ public class Post {
      * Post constructor - for local creation
      */
     public Post(String content, String accountId, String imagePath, long postAt) {
-        this.id        = UNSYNCED_ID;
-        this.status    = "queued";
-        this.synced    = false;
-        this.authorId  = UserService.getUser().getID();
-        this.accountId = accountId;
+        this(DEFAULT_OID, UNSYNCED_ID, "queued", content, UserService.getUser().getID(), accountId, imagePath, postAt, false);
+    }
+
+
+    /**
+     * Post constructor - load from DB
+     */
+    public Post(long oid, String id, String status, String content, String authorId, String accountId, String imageUrl, long postAt, boolean synced) {
+        this.id        = id;
+        this.oid       = oid;
+        this.status    = status;
         this.content   = content;
-        this.imageUrl  = imagePath;
+        this.authorId  = authorId;
+        this.accountId = accountId;
+        this.imageUrl  = imageUrl;
         this.postAt    = postAt;
+        this.synced    = synced;
     }
 
 
@@ -67,6 +73,15 @@ public class Post {
     public String  getAccountID() { return accountId; }
     public String  getAuthorID()  { return authorId;  }
     public long    getPostAt()    { return postAt;    }
+    public long    getOID()       { return oid;       }
     public boolean isSynced()     { return synced;    }
 
+
+    /**
+     * Return appropriate contract
+     */
+    @Override
+    public Contract getContract() {
+        return new DBContract.PostTable();
+    }
 }

@@ -21,48 +21,19 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         />
 
-    <LinearLayout
-        android:id="@+id/account_selector"
+
+    <!-- Load Post Options from separate layout-->
+    <include
+        android:id="@+id/post_options"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:orientation="horizontal"
-        android:padding="@dimen/new_post_account_padding"
-        android:gravity="left|center"
-        android:background="@color/grayLightest"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        >
+        layout="@layout/content_post_options"
+        />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="POST TO:"
-            android:layout_marginRight="@dimen/new_post_account_padding"
-            android:textSize="10sp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/account_image"
-            android:src="@color/primary"
-            android:layout_width="@dimen/new_post_account_image_size"
-            android:layout_height="@dimen/new_post_account_image_size"
-            android:layout_marginRight="@dimen/new_post_account_padding"
-            />
-
-        <TextView
-            android:id="@+id/account_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account Name"
-            android:layout_marginRight="@dimen/new_post_account_padding"
-            />
-
-    </LinearLayout>
 
     <EditText
         android:id="@+id/post_content"
@@ -72,7 +43,7 @@
         android:hint="@string/new_post_placeholder"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_selector"
+        app:layout_constraintTop_toBottomOf="@+id/post_options"
         app:layout_constraintHorizontal_bias="0.0"
         style="@style/CopperInk.EditText.Full"
         />

@@ -2,7 +2,6 @@ package co.firetools.copperink.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import java.util.HashMap;
 
@@ -11,20 +10,25 @@ import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
 
 public final class DBContract {
-    public  static final String TYPE_PRIMARY = "INTEGER PRIMARY KEY AUTOINCREMENT";
-    private static final String TYPE_STRING  = "TEXT";
-    private static final String TYPE_NUMBER  = "INTEGER";
-    private static final String TYPE_BOOLEAN = "INTEGER DEFAULT 0";
+    public  static final String TYPE_PRIMARY  = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String TYPE_STRING   = "TEXT";
+    private static final String TYPE_NUMBER   = "INTEGER";
+    private static final String TYPE_BOOLEAN  = "INTEGER DEFAULT 0";
+
+    public static final String TABLE_ACCOUNTS = "accounts";
+    public static final String TABLE_POSTS    = "posts";
+
+    public static final String COLUMN_ID      = "id";
+    public static final String COLUMN_OID     = "_id";
 
     private DBContract() {}
+
 
 
     /**
      * Account Table Details and Columns
      */
-    public static class AccountTable implements BaseColumns, Model.Contract<Account> {
-        public  static final String TABLE_NAME   = "accounts";
-        private static final String COLUMN_ID    = "id";
+    public static class AccountTable implements Model.Contract<Account> {
         private static final String COLUMN_NAME  = "name";
         private static final String COLUMN_IMAGE = "image";
         private static final String COLUMN_TYPE  = "type";
@@ -36,6 +40,11 @@ public final class DBContract {
                 put(COLUMN_IMAGE, TYPE_STRING);
                 put(COLUMN_TYPE,  TYPE_STRING);
             }};
+
+        @Override
+        public String getTableName() {
+            return TABLE_ACCOUNTS;
+        }
 
         @Override
         public ContentValues contentValues(Account account) {
@@ -56,11 +65,6 @@ public final class DBContract {
                 cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE))
             );
         }
-
-        @Override
-        public String getTableName() {
-            return TABLE_NAME;
-        }
     }
 
 
@@ -68,9 +72,7 @@ public final class DBContract {
     /**
      * Post Table Details and Columns
      */
-    public static class PostTable implements BaseColumns {
-        public  static final String TABLE_NAME        = "posts";
-        private static final String COLUMN_ID         = "id";
+    public static class PostTable implements Model.Contract<Post> {
         private static final String COLUMN_STATUS     = "status";
         private static final String COLUMN_CONTENT    = "content";
         private static final String COLUMN_IMAGE      = "image_url";
@@ -78,7 +80,6 @@ public final class DBContract {
         private static final String COLUMN_SYNCED     = "synced";
         private static final String COLUMN_ACCOUNT_ID = "account_id";
         private static final String COLUMN_AUTHOR_ID  = "author_id";
-
 
         public static final HashMap<String, String> FIELDS =
             new HashMap<String, String>() {{
@@ -92,8 +93,12 @@ public final class DBContract {
                 put(COLUMN_SYNCED,     TYPE_BOOLEAN);
             }};
 
+        @Override
+        public String getTableName() { return TABLE_POSTS; }
 
-        public static ContentValues contentValues(Post post) {
+
+        @Override
+        public ContentValues contentValues(Post post) {
             ContentValues values = new ContentValues();
 
             values.put(COLUMN_ID,          post.getID());
@@ -106,6 +111,21 @@ public final class DBContract {
             values.put(COLUMN_SYNCED,      post.isSynced());
 
             return values;
+        }
+
+        @Override
+        public Post toModel(Cursor cursor) {
+            return new Post(
+                cursor.getLong(cursor.getColumnIndex(COLUMN_OID)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_STATUS)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_AUTHOR_ID)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_ID)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE)),
+                cursor.getLong(cursor.getColumnIndex(COLUMN_POST_AT)),
+                cursor.getInt(cursor.getColumnIndex(COLUMN_SYNCED)) > 0
+            );
         }
     }
 

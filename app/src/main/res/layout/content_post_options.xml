@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="0dp"
+    android:orientation="horizontal"
+    android:padding="@dimen/new_post_account_padding"
+    android:background="@color/grayLightest"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:gravity="left|center"
+    >
+
+
+    <!-- Account Selector -->
+    <LinearLayout
+        android:id="@+id/account_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left|center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POST TO:"
+            android:layout_marginRight="@dimen/new_post_account_padding"
+            android:textSize="@dimen/new_post_options_text_size"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/account_image"
+            android:src="@color/primary"
+            android:layout_width="@dimen/new_post_account_image_size"
+            android:layout_height="@dimen/new_post_account_image_size"
+            android:layout_marginRight="@dimen/new_post_account_padding"
+            />
+
+        <TextView
+            android:id="@+id/account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/new_post_options_text_size"
+            android:text="Account Name"
+            android:layout_marginRight="@dimen/new_post_account_padding"
+            />
+    </LinearLayout>
+
+
+
+    <!-- Empty Gap between them -->
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+
+
+
+    <!-- Time Selector -->
+    <LinearLayout
+        android:id="@+id/time_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left|center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AT:"
+            android:layout_marginRight="@dimen/new_post_account_padding"
+            android:textSize="@dimen/new_post_options_text_size"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/new_post_options_text_size"
+            android:text="3:30pm 12th May, 2017"
+            />
+    </LinearLayout>
+</LinearLayout>

@@ -56,14 +56,16 @@ public class DBHelper extends SQLiteOpenHelper {
      * Helper to Create DB
      */
     public static void createDatabase(SQLiteDatabase db) {
-        createTable(db, DBContract.AccountTable.TABLE_NAME, DBContract.AccountTable.FIELDS);
+        createTable(db, DBContract.TABLE_POSTS,    DBContract.PostTable.FIELDS);
+        createTable(db, DBContract.TABLE_ACCOUNTS, DBContract.AccountTable.FIELDS);
     }
 
     /**
      * Helper to Reset DB
      */
     public static void resetDatabase(SQLiteDatabase db) {
-        destroyTable(db, DBContract.AccountTable.TABLE_NAME);
+        destroyTable(db, DBContract.TABLE_POSTS);
+        destroyTable(db, DBContract.TABLE_ACCOUNTS);
         createDatabase(db);
     }
 
@@ -73,7 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Helper to create a table
      */
     private static void createTable(SQLiteDatabase db, String tableName, HashMap<String, String> fields) {
-        String command = "CREATE TABLE " + tableName + " ( _id " + DBContract.TYPE_PRIMARY;
+        String command = "CREATE TABLE " + tableName + " ( " + DBContract.COLUMN_OID + " " + DBContract.TYPE_PRIMARY;
 
         for (Map.Entry<String, String> entry : fields.entrySet())
             command = command + ", " + entry.getKey() + " " + entry.getValue();

@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         // Set up Facebook Callbacks
         setFacebookCallbacks();
 
-        GlobalService.showToast(AccountService.getLastUsedAccount().getName());
-
     }
 
 
