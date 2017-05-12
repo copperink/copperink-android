@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import co.firetools.copperink.behaviors.Model;
 import co.firetools.copperink.db.DBContract;
@@ -50,6 +51,14 @@ public class AccountService {
      */
     public static void setLastUsedAccount(Account account) {
         getStore().putString(KEY_LAST_ACCOUNT_ID, account.getID());
+    }
+
+
+    /**
+     * Get all Accounts
+     */
+    public static ArrayList<Account> getAllAccounts() {
+        return (ArrayList<Account>) DBQuery.getAll(new DBContract.AccountTable());
     }
 
 

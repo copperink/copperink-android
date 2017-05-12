@@ -27,4 +27,8 @@
     <dimen name="new_post_image_margin_top">35dp</dimen>
     <dimen name="new_post_image_height_min">150dp</dimen>
     <dimen name="new_post_options_text_size">10sp</dimen>
+
+    <dimen name="row_account_dialog_height">60dp</dimen>
+    <dimen name="row_account_dialog_name_size">16sp</dimen>
+    <dimen name="row_account_dialog_image_size">40dp</dimen>
 </resources>

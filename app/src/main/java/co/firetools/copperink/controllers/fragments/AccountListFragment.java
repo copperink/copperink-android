@@ -22,9 +22,8 @@ import java.util.List;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.adapters.AccountAdapter;
-import co.firetools.copperink.db.DBContract;
-import co.firetools.copperink.db.DBQuery;
 import co.firetools.copperink.models.Account;
+import co.firetools.copperink.services.AccountService;
 
 public class AccountListFragment extends Fragment {
     public AccountListFragment() {}
@@ -69,9 +68,7 @@ public class AccountListFragment extends Fragment {
      */
     private void loadAccounts() {
         accounts.clear();
-        accounts.addAll(
-            (ArrayList<Account>) DBQuery.getAll(new DBContract.AccountTable())
-        );
+        accounts.addAll(AccountService.getAllAccounts());
         adapter.notifyDataSetChanged();
     }
 
