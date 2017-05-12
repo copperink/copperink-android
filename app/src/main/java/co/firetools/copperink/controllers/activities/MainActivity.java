@@ -20,6 +20,7 @@ import co.firetools.copperink.controllers.fragments.CreatePostFragment;
 import co.firetools.copperink.controllers.fragments.FacebookAccountSelectorFragment;
 import co.firetools.copperink.controllers.fragments.HomeFragment;
 import co.firetools.copperink.db.DB;
+import co.firetools.copperink.services.AccountService;
 import co.firetools.copperink.services.GlobalService;
 import co.firetools.copperink.services.UserService;
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up Facebook Callbacks
         setFacebookCallbacks();
+
+        GlobalService.showToast(AccountService.getLastUsedAccount().getName());
 
     }
 
@@ -71,9 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * FAB Pressed - Create a new post
+     * (if user has at least one account)
      */
     public void fabPressed(View v) {
-        pushFragment(new CreatePostFragment());
+        if (AccountService.hasAtleastOneAccount()) {
+            pushFragment(new CreatePostFragment());
+        } else {
+            GlobalService.showToast("Connect a Social Account first");
+            accountButtonPressed(null);
+        }
     }
 
 

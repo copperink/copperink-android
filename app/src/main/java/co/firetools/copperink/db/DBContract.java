@@ -2,12 +2,11 @@ package co.firetools.copperink.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import co.firetools.copperink.behaviors.Model;
 import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
 
@@ -20,11 +19,10 @@ public final class DBContract {
     private DBContract() {}
 
 
-
     /**
      * Account Table Details and Columns
      */
-    public static class AccountTable implements BaseColumns {
+    public static class AccountTable implements BaseColumns, Model.Contract<Account> {
         public  static final String TABLE_NAME   = "accounts";
         private static final String COLUMN_ID    = "id";
         private static final String COLUMN_NAME  = "name";
@@ -39,7 +37,8 @@ public final class DBContract {
                 put(COLUMN_TYPE,  TYPE_STRING);
             }};
 
-        public static ContentValues contentValues(Account account) {
+        @Override
+        public ContentValues contentValues(Account account) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_ID,    account.getID());
             values.put(COLUMN_NAME,  account.getName());
@@ -48,35 +47,19 @@ public final class DBContract {
             return values;
         }
 
-        public static void deleteAll(SQLiteDatabase db) {
-            db.delete(TABLE_NAME, null, null);
+        @Override
+        public Account toModel(Cursor cursor) {
+            return new Account(
+                cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_TYPE)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE))
+            );
         }
 
-        public static ArrayList<Account> all(SQLiteDatabase db) {
-            Cursor cursor = db.query(
-                TABLE_NAME,
-                new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_IMAGE, COLUMN_TYPE },
-                null,         // The columns for the WHERE clause
-                null,         // The values for the WHERE clause
-                null,         // don't group the rows
-                null,         // don't filter by row groups
-                null          // The sort order
-            );
-
-            ArrayList<Account> accounts = new ArrayList<>();
-            while(cursor.moveToNext()) {
-                Account account = new Account(
-                    cursor.getString(cursor.getColumnIndex(COLUMN_ID)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_TYPE)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE))
-                );
-
-                accounts.add(account);
-            }
-
-            cursor.close();
-            return accounts;
+        @Override
+        public String getTableName() {
+            return TABLE_NAME;
         }
     }
 

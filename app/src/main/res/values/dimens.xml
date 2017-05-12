@@ -24,4 +24,6 @@
     <dimen name="new_post_account_image_size">30dp</dimen>
     <dimen name="new_post_account_padding">10dp</dimen>
     <dimen name="new_post_content_margin">16dp</dimen>
+    <dimen name="new_post_image_margin_top">35dp</dimen>
+    <dimen name="new_post_image_height_min">150dp</dimen>
 </resources>

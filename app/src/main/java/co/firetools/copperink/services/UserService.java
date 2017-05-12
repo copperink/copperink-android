@@ -6,11 +6,11 @@ import java.io.IOException;
 
 import co.firetools.copperink.db.DB;
 import co.firetools.copperink.models.User;
-import co.firetools.copperink.utils.TinyDB;
+
+import static co.firetools.copperink.services.GlobalService.getStore;
 
 public class UserService {
     private static final String KEY_USER = "CopperUser";
-    private static TinyDB store;
     private static User user;
 
 
@@ -58,7 +58,7 @@ public class UserService {
         try {
             String userString = userObject.toString();
             user = User.deserialize(userString);
-            getStore().putString(KEY_USER, userString);
+            GlobalService.getStore().putString(KEY_USER, userString);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -67,18 +67,8 @@ public class UserService {
 
     public static void destroyUser() {
         DB.reset();
-        getStore().remove(KEY_USER);
+        GlobalService.getStore().remove(KEY_USER);
     }
 
-
-    /**
-     * Get a TinyDB instance
-     */
-    private static TinyDB getStore() {
-        if (store == null)
-            store = new TinyDB(GlobalService.getContext());
-
-        return store;
-    }
 
 }

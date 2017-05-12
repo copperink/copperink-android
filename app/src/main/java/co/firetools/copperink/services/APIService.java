@@ -1,7 +1,6 @@
 package co.firetools.copperink.services;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -14,13 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import co.firetools.copperink.db.DB;
-import co.firetools.copperink.db.DBContract;
-import co.firetools.copperink.models.Account;
-import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
@@ -30,36 +24,6 @@ public class APIService {
     private static final String AUTH_HEADER  = "X-AUTH-TOKEN";
     private static final String CONTENT_TYPE = "application/json";
     private static AsyncHttpClient client    = new AsyncHttpClient();
-
-
-    /**
-     * Load all accounts and save them
-     */
-    public static void fetchAccounts(final Runnable onFinish){
-        Auth.GET("/accounts", null, new JsonHttpResponseHandler(){
-            public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
-                SQLiteDatabase db = DB.getWritable();
-                DBContract.AccountTable.deleteAll(db);
-
-                try {
-                    JSONArray jsonAccounts = data.getJSONArray("accounts");
-                    for (int i = 0; i < jsonAccounts.length(); i++) {
-                        Account acc = Account.deserialize(jsonAccounts.get(i).toString());
-                        db.insert(DBContract.AccountTable.TABLE_NAME, null, DBContract.AccountTable.contentValues(acc));
-                    }
-                } catch (JSONException | IOException ex) {
-                    ex.printStackTrace();
-                }
-
-                onFinish.run();
-            }
-
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
-                APIService.handleError(error);
-                onFinish.run();
-            }
-        });
-    }
 
 
     /**

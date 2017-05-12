@@ -27,6 +27,7 @@ import java.util.HashMap;
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.adapters.AccountSelectorAdapter;
 import co.firetools.copperink.services.APIService;
+import co.firetools.copperink.services.AccountService;
 import co.firetools.copperink.utils.SimpleJSON;
 import cz.msebera.android.httpclient.Header;
 
@@ -120,7 +121,7 @@ public class FacebookAccountSelectorFragment extends Fragment {
 
             APIService.Auth.jsonPOST("/accounts/facebook/save", params, new JsonHttpResponseHandler(){
                 public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
-                    APIService.fetchAccounts(new Runnable() {
+                    AccountService.fetchAccounts(new Runnable() {
                         @Override
                         public void run() {
                             startLoading(false);

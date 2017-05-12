@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.activities.InitialActivity;
 import co.firetools.copperink.services.APIService;
+import co.firetools.copperink.services.AccountService;
 import co.firetools.copperink.services.GlobalService;
 import co.firetools.copperink.services.UserService;
 import cz.msebera.android.httpclient.Header;
@@ -130,7 +131,7 @@ public class LoginFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
                 UserService.saveUser(user);
 
-                APIService.fetchAccounts(new Runnable() {
+                AccountService.fetchAccounts(new Runnable() {
                     @Override
                     public void run() {
                         startLoading(false);

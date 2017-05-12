@@ -9,7 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class Account {
+import co.firetools.copperink.behaviors.Model;
+import co.firetools.copperink.db.DBContract;
+
+public class Account implements Model {
     private String id;
     private String name;
     private String type;
@@ -62,5 +65,14 @@ public class Account {
      */
     public static Account deserialize(String json) throws IOException {
         return new ObjectMapper().readValue(json, Account.class);
+    }
+
+
+    /**
+     * Return appropriate contract
+     */
+    @Override
+    public Contract getContract() {
+        return new DBContract.AccountTable();
     }
 }

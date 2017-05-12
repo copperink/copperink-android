@@ -68,15 +68,29 @@
         android:id="@+id/post_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/new_post_content_margin"
-        android:layout_marginRight="@dimen/new_post_content_margin"
-        android:layout_marginTop="@dimen/new_post_content_margin"
+        android:layout_margin="@dimen/new_post_content_margin"
         android:hint="@string/new_post_placeholder"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_selector"
         app:layout_constraintHorizontal_bias="0.0"
         style="@style/CopperInk.EditText.Full"
+        />
+
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/new_post_content_margin"
+        android:layout_marginRight="@dimen/new_post_content_margin"
+        android:layout_marginBottom="@dimen/new_post_content_margin"
+        android:layout_marginTop="@dimen/new_post_image_margin_top"
+        android:minHeight="@dimen/new_post_image_height_min"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_content"
+        app:srcCompat="@drawable/select_image"
         />
 
 

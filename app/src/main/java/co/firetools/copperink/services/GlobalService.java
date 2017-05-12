@@ -11,10 +11,13 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import co.firetools.copperink.R;
+import co.firetools.copperink.utils.TinyDB;
 
 public class GlobalService {
     private static final String TAG = "CopperInk";
     private static Context context;
+    private static TinyDB store;
+
 
     /**
      * Custom Logger wrapper
@@ -22,6 +25,7 @@ public class GlobalService {
     public static void log(String text) {
         Log.d(TAG, text);
     }
+
 
 
     /**
@@ -46,6 +50,19 @@ public class GlobalService {
     }
 
 
+
+    /**
+     * Get a TinyDB instance
+     */
+    public static TinyDB getStore() {
+        if (store == null)
+            store = new TinyDB(GlobalService.getContext());
+
+        return store;
+    }
+
+
+
     /**
      * Hide Keyboard
      */
@@ -58,12 +75,14 @@ public class GlobalService {
     }
 
 
+
     /**
      * Show Toast with default settings
      */
     public static void showToast(String text) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
+
 
 
     /**
