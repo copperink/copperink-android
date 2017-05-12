@@ -12,10 +12,11 @@ import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
 
 public final class DBContract {
-    static final String TYPE_PRIMARY = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    public  static final String TYPE_PRIMARY = "INTEGER PRIMARY KEY AUTOINCREMENT";
     private static final String TYPE_STRING  = "TEXT";
     private static final String TYPE_NUMBER  = "INTEGER";
     private static final String TYPE_BOOLEAN = "INTEGER DEFAULT 0";
+
     private DBContract() {}
 
 
@@ -79,7 +80,7 @@ public final class DBContract {
         }
     }
 
-    
+
 
     /**
      * Post Table Details and Columns

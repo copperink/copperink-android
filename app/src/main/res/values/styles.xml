@@ -4,8 +4,11 @@
     <style name="CopperInk" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorControlNormal">@color/accent</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:colorBackground">@color/bg</item>
+
+        <item name="editTextStyle">@style/CopperInk.EditText</item>
         <item name="android:checkboxStyle">@style/CopperInk.Checkbox</item>
         <item name="android:progressBarStyle">@style/CopperInk.ProgressBar</item>
     </style>
@@ -57,11 +60,35 @@
         <item name="android:indeterminateTint">@color/primary</item>
     </style>
 
+
     <!-- Checkbox -->
     <style name="CopperInk.Checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:foregroundTint">@color/primary</item>
         <item name="android:backgroundTint">@color/primary</item>
         <item name="android:buttonTint">@color/primary</item>
     </style>
+
+
+    <!-- FAB -->
+    <style name="CopperInk.FAB" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+        <item name="android:tint">@color/accentSecondary</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="useCompatPadding">true</item>
+        <item name="fabSize">normal</item>
+    </style>
+
+
+    <!-- EditText -->
+    <style name="CopperInk.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColorHint">@color/grayLight</item>
+    </style>
+
+    <style name="CopperInk.EditText.Full" parent="CopperInk.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
 
 </resources>

@@ -61,7 +61,17 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_post_list" />
+     
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/icon_feather"
+        android:onClick="fabPressed"
+        style="@style/CopperInk.FAB"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

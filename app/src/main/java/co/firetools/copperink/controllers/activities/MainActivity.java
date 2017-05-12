@@ -16,6 +16,7 @@ import com.facebook.login.LoginResult;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.fragments.AccountListFragment;
+import co.firetools.copperink.controllers.fragments.CreatePostFragment;
 import co.firetools.copperink.controllers.fragments.FacebookAccountSelectorFragment;
 import co.firetools.copperink.controllers.fragments.HomeFragment;
 import co.firetools.copperink.db.DB;
@@ -64,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
      */
     public void accountButtonPressed(View v) {
         pushFragment(new AccountListFragment());
+    }
+
+
+
+    /**
+     * FAB Pressed - Create a new post
+     */
+    public void fabPressed(View v) {
+        pushFragment(new CreatePostFragment());
     }
 
 

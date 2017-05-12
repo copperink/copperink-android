@@ -8,8 +8,13 @@
 
     <!-- monochromes -->
     <color name="black">#131313</color>
-    <color name="gray">#262626</color>
-    <color name="grayDark">#1B1B1B</color>
+    <color name="grayDarkest">#1B1B1B</color>
+    <color name="grayDarker">#262626</color>
+    <color name="grayDark">#363636</color>
+    <color name="gray">#7A7A7A</color>
+    <color name="grayLight">#B5B5B5</color>
+    <color name="grayLighter">#DBDBDB</color>
+    <color name="grayLightest">#F5F5F5</color>
     <color name="white">#FAFAFA</color>
     <color name="whitest">#FFFFFF</color>
 
@@ -23,7 +28,10 @@
     <!-- palette -->
     <color name="primary">@color/turquoise</color>
     <color name="primaryDark">@color/turquoise</color>
-    <color name="accent">@color/white</color>
+
+    <color name="accent">@color/primary</color>
+    <color name="accentSecondary">@color/white</color>
+
     <color name="bg">@color/white</color>
 
 </resources>

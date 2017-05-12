@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">CopperInk</string>
+
     <string name="title_fragment_accounts">Accounts</string>
     <string name="title_fragment_add_account">Add Account</string>
+    <string name="title_fragment_new_post">Add New Post</string>
     <string name="title_fragment_facebook_selector">Select Accounts</string>
+
     <string name="title_menu_done">Done</string>
     <string name="title_menu_logout">Log Out</string>
+
+    <string name="new_post_placeholder">Enter Your Status...</string>
 
     <string-array name="facebook_read_permissions">
         <item>user_photos</item>
