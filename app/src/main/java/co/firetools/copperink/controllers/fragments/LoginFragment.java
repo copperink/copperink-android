@@ -153,8 +153,9 @@ public class LoginFragment extends Fragment {
     private void doSignup() {
         startLoading(true);
 
-        if (!passwordField.getText().equals(confirmationField.getText())){
+        if (!passwordField.getText().toString().equals(confirmationField.getText().toString())){
             GlobalService.showError("Passwords do not match");
+            startLoading(false);
             return;
         }
 

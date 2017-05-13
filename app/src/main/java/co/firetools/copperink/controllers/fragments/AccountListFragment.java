@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.firetools.copperink.R;
+import co.firetools.copperink.behaviors.RVEmptyObserver;
 import co.firetools.copperink.controllers.adapters.AccountAdapter;
 import co.firetools.copperink.models.Account;
 import co.firetools.copperink.services.AccountService;
@@ -28,6 +29,7 @@ import co.firetools.copperink.services.AccountService;
 public class AccountListFragment extends Fragment {
     public AccountListFragment() {}
 
+    View emptyView;
     Toolbar toolbar;
     RecyclerView accountList;
     AppCompatActivity activity;
@@ -40,6 +42,7 @@ public class AccountListFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_account_list, container, false);
 
         // Initialize Components
+        emptyView   =                root.findViewById(R.id.empty_view);
         toolbar     = (Toolbar)      root.findViewById(R.id.toolbar);
         accountList = (RecyclerView) root.findViewById(R.id.account_list_view);
         activity    = (AppCompatActivity) getActivity();
@@ -53,6 +56,7 @@ public class AccountListFragment extends Fragment {
         accounts = new ArrayList<>();
         adapter = new AccountAdapter(accounts);
         accountList.setAdapter(adapter);
+        adapter.registerAdapterDataObserver(new RVEmptyObserver(accountList, emptyView));
         accountList.setLayoutManager(llm);
 
         // Load Accounts from DB

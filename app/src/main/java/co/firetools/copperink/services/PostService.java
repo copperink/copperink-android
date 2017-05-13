@@ -24,7 +24,7 @@ public class PostService {
      */
     public static ArrayList<Post> whereStatusIs(String status) {
         Model.Contract contract = new DBContract.PostTable();
-        Cursor cursor = DBQuery.getCursor(contract, "status = ?", new String[] { status });
+        Cursor cursor = DBQuery.getCursor(contract, "status = ?", new String[] { status }, DBContract.COLUMN_POST_AT );
         return (ArrayList<Post>) DBQuery.getAll(contract, cursor);
     }
 

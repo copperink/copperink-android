@@ -33,4 +33,12 @@
         tools:listitem="@layout/row_account"
         />
 
+
+    <include
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        layout="@layout/content_empty"
+        />
+
 </android.support.constraint.ConstraintLayout>

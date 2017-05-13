@@ -9,6 +9,8 @@
     <string name="title_menu_done">Done</string>
     <string name="title_menu_logout">Log Out</string>
 
+    <string name="empty_text">There\'s nothing here</string>
+
     <string name="new_post_placeholder">Enter Your Status…</string>
 
     <string-array name="facebook_read_permissions">
