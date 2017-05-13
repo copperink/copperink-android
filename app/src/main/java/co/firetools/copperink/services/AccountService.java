@@ -35,14 +35,20 @@ public class AccountService {
      */
     public static Account getLastUsedAccount() {
         String id = GlobalService.getStore().getString(KEY_LAST_ACCOUNT_ID);
-        DBContract.AccountTable contract = new DBContract.AccountTable();
-        GlobalService.log("Last Selected ID: " + id);
+        GlobalService.log("Last Used Account ID: " + id);
 
-        if (id == null || id.isEmpty()) {
-            return (Account) DBQuery.first(contract);
-        } else {
-            return (Account) DBQuery.findBy(contract, DBContract.COLUMN_ID, id);
-        }
+        if (id == null || id.isEmpty())
+            return (Account) DBQuery.first(new DBContract.AccountTable());
+        else
+            return get(id);
+    }
+
+
+    /**
+     * Get an Account by ID
+     */
+    public static Account get(String id) {
+        return (Account) DBQuery.findBy(new DBContract.AccountTable(), DBContract.COLUMN_ID, id);
     }
 
 

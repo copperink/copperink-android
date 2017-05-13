@@ -9,11 +9,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/post_list_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/large_text"
+        android:paddingBottom="@dimen/post_row_margin"
+        tools:listitem="@layout/row_post"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
 </android.support.v4.widget.NestedScrollView>

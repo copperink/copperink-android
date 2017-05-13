@@ -44,7 +44,7 @@ public class DBQuery {
      * Get First Row
      */
     public static Model first(Model.Contract contract) {
-        return first(contract, getReadCursor(contract));
+        return first(contract, getCursor(contract));
     }
 
     public static Model first(Model.Contract contract, Cursor cursor) {
@@ -64,17 +64,20 @@ public class DBQuery {
      * Find by ID
      */
     public static Model findBy(Model.Contract contract, String column, String value) {
-        Cursor cursor = getReadCursor(contract, column + " = ?", new String[] { value });
+        Cursor cursor = getCursor(contract, column + " = ?", new String[] { value });
         return first(contract, cursor);
     }
 
 
 
     /**
-     * Get All rows for a contract
+     * Get All rows for a contract and cursor
      */
     public static ArrayList<? extends Model> getAll(Model.Contract contract) {
-        Cursor cursor = getReadCursor(contract);
+        return getAll(contract, getCursor(contract));
+    }
+
+    public static ArrayList<? extends Model> getAll(Model.Contract contract, Cursor cursor) {
         ArrayList<Model> modelList = new ArrayList<>();
 
         while(cursor.moveToNext())
@@ -89,19 +92,23 @@ public class DBQuery {
     /**
      * Get a cursor with all columns for a DB and contract
      */
-    private static Cursor getReadCursor(Model.Contract contract) {
-        return getReadCursor(contract, null, null);
+    public static Cursor getCursor(Model.Contract contract) {
+        return getCursor(contract, null, null);
     }
 
-    private static Cursor getReadCursor(Model.Contract contract, String whereSelector, String[] whereValues) {
+    public static Cursor getCursor(Model.Contract contract, String whereSelector, String[] whereValues) {
+        return getCursor(contract, whereSelector, whereValues, null);
+    }
+
+    public static Cursor getCursor(Model.Contract contract, String whereSelector, String[] whereValues, String orderBy) {
         return DB.getReadable().query(
-            contract.getTableName(), // Table Name
-            new String[] { "*" },    // Get all Columns
-            whereSelector,           // The columns for the WHERE clause
-            whereValues,             // The values for the WHERE clause
-            null,                    // don't group the rows
-            null,                    // don't filter by row groups
-            null                     // The sort order
+                contract.getTableName(), // Table Name
+                new String[] { "*" },    // Get all Columns
+                whereSelector,           // The columns for the WHERE clause
+                whereValues,             // The values for the WHERE clause
+                null,                    // don't group the rows
+                null,                    // don't filter by row groups
+                orderBy                  // The sort order
         );
     }
 

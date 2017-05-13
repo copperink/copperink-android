@@ -21,6 +21,14 @@
     <dimen name="account_margin">15dp</dimen>
     <dimen name="account_name_text_size">18sp</dimen>
 
+    <dimen name="post_row_size">120dp</dimen>
+    <dimen name="post_row_margin">20dp</dimen>
+    <dimen name="post_row_padding">12dp</dimen>
+    <dimen name="post_row_meta_padding">8dp</dimen>
+    <dimen name="post_row_meta_text_size">12sp</dimen>
+    <dimen name="post_row_content_text_size">16sp</dimen>
+    <dimen name="post_row_account_image_size">20dp</dimen>
+
     <dimen name="new_post_account_image_size">25dp</dimen>
     <dimen name="new_post_account_padding">10dp</dimen>
     <dimen name="new_post_content_margin">16dp</dimen>

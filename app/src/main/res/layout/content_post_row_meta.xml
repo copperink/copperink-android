@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:gravity="left|center"
+    android:paddingTop="@dimen/post_row_meta_padding"
+    android:paddingBottom="@dimen/post_row_meta_padding"
+    android:paddingLeft="@dimen/post_row_padding"
+    android:paddingRight="@dimen/post_row_padding"
+    android:background="@drawable/border_gray_top"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/account_image"
+        android:src="@color/primary"
+        android:layout_width="@dimen/post_row_account_image_size"
+        android:layout_height="@dimen/post_row_account_image_size"
+        android:layout_marginRight="@dimen/post_row_meta_padding"
+        />
+
+    <TextView
+        android:id="@+id/post_meta"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tomorrow at 12pm"
+        android:textSize="@dimen/post_row_meta_text_size"
+        />
+
+</LinearLayout>

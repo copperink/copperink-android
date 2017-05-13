@@ -27,7 +27,6 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -38,6 +37,7 @@ import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
 import co.firetools.copperink.services.AccountService;
 import co.firetools.copperink.services.GlobalService;
+import co.firetools.copperink.services.PostService;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,8 +47,6 @@ public class CreatePostFragment extends Fragment
 
     private final static int IMAGE_PICKER_REQUEST_CODE = 10;
     private final static int MINIMUM_TIME_DIFF = 10000; // ms
-    private final static String DATETIME_FORMAT = "hh:mm aaa (MMM d, yyyy)";
-    private final static SimpleDateFormat SDF = new SimpleDateFormat(DATETIME_FORMAT);
 
     Toolbar   toolbar;
     ImageView postImage;
@@ -124,7 +122,7 @@ public class CreatePostFragment extends Fragment
      * Set and show the DateTime in View
      */
     private void setDateTime() {
-        postDateTime.setText(SDF.format(selectedDateTime.getTime()));
+        postDateTime.setText(PostService.dateToString(selectedDateTime));
     }
 
 
@@ -274,11 +272,13 @@ public class CreatePostFragment extends Fragment
         long timestamp = selectedDateTime.getTimeInMillis();
         long timediff  = timestamp - Calendar.getInstance().getTimeInMillis();
 
+        String imagePath = (selectedImage == null) ? null : selectedImage.getPath();
+
         if (timediff > MINIMUM_TIME_DIFF) {
             Post post = new Post(
                 postContent.getText().toString(),
                 selectedAccount.getID(),
-                selectedImage.getPath(),
+                imagePath,
                 timestamp
             );
 

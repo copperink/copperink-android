@@ -5,11 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import co.firetools.copperink.behaviors.Model;
 import co.firetools.copperink.db.DBContract;
+import co.firetools.copperink.services.PostService;
 import co.firetools.copperink.services.UserService;
 
 public class Post implements Model {
-    public final static String UNSYNCED_ID = "__unsynced__";
     public final static long   DEFAULT_OID = -1;
+    public final static String UNSYNCED_ID = "__unsynced__";
+
+    public final static String STATUS_QUEUED = "queued";
+    public final static String STATUS_POSTED = "posted";
+    public final static String STATUS_ERROR  = "error";
 
     private String  id;
     private String  status;
@@ -76,6 +81,13 @@ public class Post implements Model {
     public long    getOID()       { return oid;       }
     public boolean isSynced()     { return synced;    }
 
+
+    /**
+     * Pretty print datetime
+     */
+    public String prettyPostTime() {
+        return PostService.dateToString(getPostAt());
+    }
 
     /**
      * Return appropriate contract

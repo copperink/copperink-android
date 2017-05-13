@@ -34,6 +34,7 @@
     <color name="accent">@color/primary</color>
     <color name="accentSecondary">@color/white</color>
     <color name="bg">@color/white</color>
+    <color name="separator">@color/grayLighter</color>
 
 
     <!-- Image Picker -->

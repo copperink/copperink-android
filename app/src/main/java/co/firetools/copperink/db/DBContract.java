@@ -10,18 +10,35 @@ import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
 
 public final class DBContract {
-    public  static final String TYPE_PRIMARY  = "INTEGER PRIMARY KEY AUTOINCREMENT";
-    private static final String TYPE_STRING   = "TEXT";
-    private static final String TYPE_NUMBER   = "INTEGER";
-    private static final String TYPE_BOOLEAN  = "INTEGER DEFAULT 0";
-
-    public static final String TABLE_ACCOUNTS = "accounts";
-    public static final String TABLE_POSTS    = "posts";
-
-    public static final String COLUMN_ID      = "id";
-    public static final String COLUMN_OID     = "_id";
-
     private DBContract() {}
+
+    // Table Names
+    public static final String TABLE_ACCOUNTS    = "accounts";
+    public static final String TABLE_POSTS       = "posts";
+
+    // Column Types
+    public static final String TYPE_PRIMARY      = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    public static final String TYPE_STRING       = "TEXT";
+    public static final String TYPE_NUMBER       = "INTEGER";
+    public static final String TYPE_BOOLEAN      = "INTEGER DEFAULT 0";
+
+    // Common Column Names
+    public static final String COLUMN_ID         = "id";
+    public static final String COLUMN_OID        = "_id";
+    public static final String COLUMN_IMAGE      = "image";
+
+    // Account-specific columns
+    public static final String COLUMN_NAME       = "name";
+    public static final String COLUMN_TYPE       = "type";
+
+    // Post-specific columns
+    public static final String COLUMN_STATUS     = "status";
+    public static final String COLUMN_CONTENT    = "content";
+    public static final String COLUMN_POST_AT    = "post_at";
+    public static final String COLUMN_SYNCED     = "synced";
+    public static final String COLUMN_AUTHOR_ID  = "author_id";
+    public static final String COLUMN_ACCOUNT_ID = "account_id";
+
 
 
 
@@ -29,10 +46,6 @@ public final class DBContract {
      * Account Table Details and Columns
      */
     public static class AccountTable implements Model.Contract<Account> {
-        private static final String COLUMN_NAME  = "name";
-        private static final String COLUMN_IMAGE = "image";
-        private static final String COLUMN_TYPE  = "type";
-
         public static final HashMap<String, String> FIELDS =
             new HashMap<String, String>() {{
                 put(COLUMN_ID,    TYPE_STRING);
@@ -73,14 +86,6 @@ public final class DBContract {
      * Post Table Details and Columns
      */
     public static class PostTable implements Model.Contract<Post> {
-        private static final String COLUMN_STATUS     = "status";
-        private static final String COLUMN_CONTENT    = "content";
-        private static final String COLUMN_IMAGE      = "image_url";
-        private static final String COLUMN_POST_AT    = "post_at";
-        private static final String COLUMN_SYNCED     = "synced";
-        private static final String COLUMN_ACCOUNT_ID = "account_id";
-        private static final String COLUMN_AUTHOR_ID  = "author_id";
-
         public static final HashMap<String, String> FIELDS =
             new HashMap<String, String>() {{
                 put(COLUMN_ID,         TYPE_STRING);
