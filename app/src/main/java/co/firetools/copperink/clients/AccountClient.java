@@ -1,4 +1,4 @@
-package co.firetools.copperink.services;
+package co.firetools.copperink.clients;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -15,9 +15,9 @@ import co.firetools.copperink.db.DBQuery;
 import co.firetools.copperink.models.Account;
 import cz.msebera.android.httpclient.Header;
 
-import static co.firetools.copperink.services.GlobalService.getStore;
+import static co.firetools.copperink.clients.GlobalClient.getStore;
 
-public class AccountService {
+public class AccountClient {
     private static final String KEY_LAST_ACCOUNT_ID = "CopperAccountLast";
 
 
@@ -34,8 +34,8 @@ public class AccountService {
      * Set Last Used account
      */
     public static Account getLastUsedAccount() {
-        String id = GlobalService.getStore().getString(KEY_LAST_ACCOUNT_ID);
-        GlobalService.log("Last Used Account ID: " + id);
+        String id = GlobalClient.getStore().getString(KEY_LAST_ACCOUNT_ID);
+        GlobalClient.log("Last Used Account ID: " + id);
 
         if (id == null || id.isEmpty())
             return (Account) DBQuery.first(new DBContract.AccountTable());
@@ -74,7 +74,7 @@ public class AccountService {
      * Fetch all accounts from server and save them
      */
     public static void fetchAccounts(final Runnable onFinish){
-        APIService.Auth.GET("/accounts", null, new JsonHttpResponseHandler(){
+        APIClient.Auth.GET("/accounts", null, new JsonHttpResponseHandler(){
             public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
                 Model.Contract contract = new DBContract.AccountTable();
                 DBQuery.deleteAll(contract);
@@ -93,7 +93,7 @@ public class AccountService {
             }
 
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
-                APIService.handleError(error);
+                APIClient.handleError(error);
                 onFinish.run();
             }
         });

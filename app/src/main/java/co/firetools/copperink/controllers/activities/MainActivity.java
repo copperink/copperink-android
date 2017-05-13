@@ -20,9 +20,9 @@ import co.firetools.copperink.controllers.fragments.CreatePostFragment;
 import co.firetools.copperink.controllers.fragments.FacebookAccountSelectorFragment;
 import co.firetools.copperink.controllers.fragments.HomeFragment;
 import co.firetools.copperink.db.DB;
-import co.firetools.copperink.services.AccountService;
-import co.firetools.copperink.services.GlobalService;
-import co.firetools.copperink.services.UserService;
+import co.firetools.copperink.clients.AccountClient;
+import co.firetools.copperink.clients.GlobalClient;
+import co.firetools.copperink.clients.UserClient;
 
 public class MainActivity extends AppCompatActivity {
     CallbackManager facebookCallback;
@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
      * (if user has at least one account)
      */
     public void fabPressed(View v) {
-        if (AccountService.hasAtleastOneAccount()) {
+        if (AccountClient.hasAtleastOneAccount()) {
             pushFragment(new CreatePostFragment());
         } else {
-            GlobalService.showToast("Connect a Social Account first");
+            GlobalClient.showToast("Connect a Social Account first");
             accountButtonPressed(null);
         }
     }
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Logout Button was pressed
             case R.id.action_logout:
-                UserService.destroyUser();
+                UserClient.destroyUser();
                 Intent i = new Intent(this, InitialActivity.class);
                 startActivity(i);
                 finish();
@@ -138,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancel() {
-                    GlobalService.showToast("Login Cancelled");
+                    GlobalClient.showToast("Login Cancelled");
                 }
 
                 @Override
                 public void onError(FacebookException exception) {
-                    GlobalService.showToast("Error: " + exception.getMessage());
+                    GlobalClient.showToast("Error: " + exception.getMessage());
                 }
             });
     }

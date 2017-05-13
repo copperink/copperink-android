@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import co.firetools.copperink.behaviors.Model;
 import co.firetools.copperink.db.DBContract;
-import co.firetools.copperink.services.PostService;
-import co.firetools.copperink.services.UserService;
+import co.firetools.copperink.clients.PostClient;
+import co.firetools.copperink.clients.UserClient;
 
 public class Post implements Model {
     public final static long   DEFAULT_OID = -1;
@@ -47,7 +47,7 @@ public class Post implements Model {
      * Post constructor - for local creation
      */
     public Post(String content, String accountId, String imagePath, long postAt) {
-        this(DEFAULT_OID, UNSYNCED_ID, "queued", content, UserService.getUser().getID(), accountId, imagePath, postAt, false);
+        this(DEFAULT_OID, UNSYNCED_ID, "queued", content, UserClient.getUser().getID(), accountId, imagePath, postAt, false);
     }
 
 
@@ -86,7 +86,7 @@ public class Post implements Model {
      * Pretty print datetime
      */
     public String prettyPostTime() {
-        return PostService.dateToString(getPostAt());
+        return PostClient.dateToString(getPostAt());
     }
 
     /**

@@ -1,4 +1,4 @@
-package co.firetools.copperink.services;
+package co.firetools.copperink.clients;
 
 import android.database.Cursor;
 import android.view.View;
@@ -15,7 +15,7 @@ import co.firetools.copperink.db.DBContract;
 import co.firetools.copperink.db.DBQuery;
 import co.firetools.copperink.models.Post;
 
-public class PostService {
+public class PostClient {
     private final static String DATETIME_FORMAT = "hh:mm aaa (MMM d, yyyy)";
 
     /**
@@ -38,9 +38,9 @@ public class PostService {
 
         if (imageUrl != null && !imageUrl.isEmpty()) {
             if (post.isSynced())
-                GlobalService.setImage(iv, post.getImageUrl());
+                GlobalClient.setImage(iv, post.getImageUrl());
             else
-                GlobalService.setImage(iv, new File(post.getImageUrl()));
+                GlobalClient.setImage(iv, new File(post.getImageUrl()));
 
         } else {
             iv.setVisibility(View.GONE);

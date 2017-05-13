@@ -24,7 +24,7 @@ import co.firetools.copperink.R;
 import co.firetools.copperink.behaviors.RVEmptyObserver;
 import co.firetools.copperink.controllers.adapters.AccountAdapter;
 import co.firetools.copperink.models.Account;
-import co.firetools.copperink.services.AccountService;
+import co.firetools.copperink.clients.AccountClient;
 
 public class AccountListFragment extends Fragment {
     public AccountListFragment() {}
@@ -72,7 +72,7 @@ public class AccountListFragment extends Fragment {
      */
     private void loadAccounts() {
         accounts.clear();
-        accounts.addAll(AccountService.getAllAccounts());
+        accounts.addAll(AccountClient.getAllAccounts());
         adapter.notifyDataSetChanged();
     }
 

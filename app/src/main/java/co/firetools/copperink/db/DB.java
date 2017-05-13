@@ -2,7 +2,7 @@ package co.firetools.copperink.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import co.firetools.copperink.services.GlobalService;
+import co.firetools.copperink.clients.GlobalClient;
 
 public class DB {
     private static DBHelper helper;
@@ -20,7 +20,7 @@ public class DB {
      */
     private static DBHelper get() {
         if (helper == null)
-            helper = new DBHelper(GlobalService.getContext());
+            helper = new DBHelper(GlobalClient.getContext());
 
         return helper;
     }

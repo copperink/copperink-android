@@ -1,4 +1,4 @@
-package co.firetools.copperink.services;
+package co.firetools.copperink.clients;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -19,7 +19,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
-public class APIService {
+public class APIClient {
     private static final String BASE_URL     = "http://copperink.192.168.1.5.xip.io/api/v1";
     private static final String AUTH_HEADER  = "X-AUTH-TOKEN";
     private static final String CONTENT_TYPE = "application/json";
@@ -30,7 +30,7 @@ public class APIService {
      * Checks if connected to the internet
      */
     public static Boolean connectedToInternet(){
-        ConnectivityManager cm = (ConnectivityManager) GlobalService.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) GlobalClient.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
@@ -43,7 +43,7 @@ public class APIService {
     public static void handleError(JSONObject errorObject) {
         try {
             JSONArray errors = errorObject.getJSONArray("errors");
-            GlobalService.showError(errors.join(","));
+            GlobalClient.showError(errors.join(","));
         } catch (JSONException je) {
             je.printStackTrace();
         }
@@ -89,7 +89,7 @@ public class APIService {
         }
 
         public static void jsonPOST(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
-            client.post(GlobalService.getContext(), getAbsoluteURL(path), prepareJSONParams(json), CONTENT_TYPE, responseHandler);
+            client.post(GlobalClient.getContext(), getAbsoluteURL(path), prepareJSONParams(json), CONTENT_TYPE, responseHandler);
         }
     }
 
@@ -120,7 +120,7 @@ public class APIService {
 
         private static void authorizeClient() {
             client.removeHeader(AUTH_HEADER);
-            client.addHeader(AUTH_HEADER, UserService.getUser().getToken());
+            client.addHeader(AUTH_HEADER, UserClient.getUser().getToken());
         }
     }
 

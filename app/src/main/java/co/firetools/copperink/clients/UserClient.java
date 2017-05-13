@@ -1,4 +1,4 @@
-package co.firetools.copperink.services;
+package co.firetools.copperink.clients;
 
 import org.json.JSONObject;
 
@@ -7,9 +7,9 @@ import java.io.IOException;
 import co.firetools.copperink.db.DB;
 import co.firetools.copperink.models.User;
 
-import static co.firetools.copperink.services.GlobalService.getStore;
+import static co.firetools.copperink.clients.GlobalClient.getStore;
 
-public class UserService {
+public class UserClient {
     private static final String KEY_USER = "CopperUser";
     private static User user;
 
@@ -58,17 +58,19 @@ public class UserService {
         try {
             String userString = userObject.toString();
             user = User.deserialize(userString);
-            GlobalService.getStore().putString(KEY_USER, userString);
+            GlobalClient.getStore().putString(KEY_USER, userString);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
 
+    /**
+     * Delete all user data and preferences
+     */
     public static void destroyUser() {
         DB.reset();
-        GlobalService.getStore().remove(KEY_USER);
+        GlobalClient.getStore().clear();
     }
-
 
 }

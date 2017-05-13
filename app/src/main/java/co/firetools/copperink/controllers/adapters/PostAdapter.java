@@ -12,9 +12,9 @@ import java.util.List;
 import co.firetools.copperink.R;
 import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
-import co.firetools.copperink.services.AccountService;
-import co.firetools.copperink.services.GlobalService;
-import co.firetools.copperink.services.PostService;
+import co.firetools.copperink.clients.AccountClient;
+import co.firetools.copperink.clients.GlobalClient;
+import co.firetools.copperink.clients.PostClient;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> posts;
@@ -64,12 +64,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder vh, int position) {
         Post post = posts.get(position);
-        Account account = AccountService.get(post.getAccountID());
+        Account account = AccountClient.get(post.getAccountID());
 
         vh.postContent.setText(post.getContent());
         vh.postMeta.setText(post.prettyPostTime());
 
-        PostService.setImage(post, vh.postImage);
-        GlobalService.setImage(vh.accountImage, account.getImageUrl());
+        PostClient.setImage(post, vh.postImage);
+        GlobalClient.setImage(vh.accountImage, account.getImageUrl());
     }
 }

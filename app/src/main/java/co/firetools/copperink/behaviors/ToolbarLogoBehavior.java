@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import co.firetools.copperink.R;
-import co.firetools.copperink.services.GlobalService;
+import co.firetools.copperink.clients.GlobalClient;
 
 
 
@@ -31,7 +31,7 @@ public class ToolbarLogoBehavior implements AppBarLayout.OnOffsetChangedListener
      * @param logo - ImageView in the Toolbar
      */
     public ToolbarLogoBehavior(ImageView logo) {
-        Context context = GlobalService.getContext();
+        Context context = GlobalClient.getContext();
 
         MAX_LOGO_HEIGHT = context.getResources().getDimension(R.dimen.logo_height_max);
         MIN_LOGO_HEIGHT = context.getResources().getDimension(R.dimen.logo_height_min);

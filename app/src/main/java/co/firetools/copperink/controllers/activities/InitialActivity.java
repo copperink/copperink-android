@@ -14,8 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import co.firetools.copperink.R;
-import co.firetools.copperink.services.GlobalService;
-import co.firetools.copperink.services.UserService;
+import co.firetools.copperink.clients.GlobalClient;
+import co.firetools.copperink.clients.UserClient;
 
 public class InitialActivity extends AppCompatActivity {
     private Context context;
@@ -29,10 +29,10 @@ public class InitialActivity extends AppCompatActivity {
         context = getApplicationContext();
 
         // Make application context available to Global
-        GlobalService.setContext(context);
+        GlobalClient.setContext(context);
 
         // Load existing user profile
-        UserService.loadUser();
+        UserClient.loadUser();
 
 
         // Wait determined time before showing login
@@ -45,7 +45,7 @@ public class InitialActivity extends AppCompatActivity {
             }
 
             protected void onPostExecute(Void unused) {
-                if (UserService.userExists())
+                if (UserClient.userExists())
                     openMainActivity();
                 else
                     showLoginView();

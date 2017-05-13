@@ -18,7 +18,7 @@ import co.firetools.copperink.behaviors.RVEmptyObserver;
 import co.firetools.copperink.behaviors.ToolbarLogoBehavior;
 import co.firetools.copperink.controllers.adapters.PostAdapter;
 import co.firetools.copperink.models.Post;
-import co.firetools.copperink.services.PostService;
+import co.firetools.copperink.clients.PostClient;
 
 public class HomeFragment extends Fragment {
     public HomeFragment() { }
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
      */
     private void loadPosts() {
         posts.clear();
-        posts.addAll(PostService.whereStatusIs(Post.STATUS_QUEUED));
+        posts.addAll(PostClient.whereStatusIs(Post.STATUS_QUEUED));
         adapter.notifyDataSetChanged();
     }
 

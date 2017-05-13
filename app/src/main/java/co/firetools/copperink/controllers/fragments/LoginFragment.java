@@ -17,10 +17,10 @@ import org.json.JSONObject;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.activities.InitialActivity;
-import co.firetools.copperink.services.APIService;
-import co.firetools.copperink.services.AccountService;
-import co.firetools.copperink.services.GlobalService;
-import co.firetools.copperink.services.UserService;
+import co.firetools.copperink.clients.APIClient;
+import co.firetools.copperink.clients.AccountClient;
+import co.firetools.copperink.clients.GlobalClient;
+import co.firetools.copperink.clients.UserClient;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginFragment extends Fragment {
@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment {
      */
     private void startLoading(boolean loading) {
         if (loading) {
-            GlobalService.hideKeyboard(getActivity());
+            GlobalClient.hideKeyboard(getActivity());
             formView.setVisibility(View.GONE);
             loader.setVisibility(View.VISIBLE);
         } else {
@@ -127,11 +127,11 @@ public class LoginFragment extends Fragment {
         params.put("user[email]",    emailField.getText());
         params.put("user[password]", passwordField.getText());
 
-        APIService.Basic.POST("/sessions/sign-in", params, new JsonHttpResponseHandler() {
+        APIClient.Basic.POST("/sessions/sign-in", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
-                UserService.saveUser(user);
+                UserClient.saveUser(user);
 
-                AccountService.fetchAccounts(new Runnable() {
+                AccountClient.fetchAccounts(new Runnable() {
                     @Override
                     public void run() {
                         startLoading(false);
@@ -141,7 +141,7 @@ public class LoginFragment extends Fragment {
             }
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                 startLoading(false);
-                APIService.handleError(error);
+                APIClient.handleError(error);
             }
         });
     }
@@ -154,7 +154,7 @@ public class LoginFragment extends Fragment {
         startLoading(true);
 
         if (!passwordField.getText().toString().equals(confirmationField.getText().toString())){
-            GlobalService.showError("Passwords do not match");
+            GlobalClient.showError("Passwords do not match");
             startLoading(false);
             return;
         }
@@ -164,15 +164,15 @@ public class LoginFragment extends Fragment {
         params.put("user[email]",    emailField.getText());
         params.put("user[password]", passwordField.getText());
 
-        APIService.Basic.POST("/sessions/sign-up", params, new JsonHttpResponseHandler() {
+        APIClient.Basic.POST("/sessions/sign-up", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject user) {
                 startLoading(false);
-                UserService.saveUser(user);
+                UserClient.saveUser(user);
                 openMainActivity();
             }
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                 startLoading(false);
-                APIService.handleError(error);
+                APIClient.handleError(error);
             }
         });
     }

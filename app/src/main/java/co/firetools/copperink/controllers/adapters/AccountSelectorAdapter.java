@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import co.firetools.copperink.R;
-import co.firetools.copperink.services.GlobalService;
+import co.firetools.copperink.clients.GlobalClient;
 
 public class AccountSelectorAdapter extends RecyclerView.Adapter<AccountSelectorAdapter.ViewHolder> {
     private List<HashMap> accounts;
@@ -65,7 +65,7 @@ public class AccountSelectorAdapter extends RecyclerView.Adapter<AccountSelector
     public void onBindViewHolder(final ViewHolder vh, int position) {
         final HashMap account = accounts.get(position);
         vh.name.setText((String)account.get("name"));
-        GlobalService.setImage(vh.image, (String)account.get("image"));
+        GlobalClient.setImage(vh.image, (String)account.get("image"));
 
         vh.checkbox.setOnCheckedChangeListener(null);
         vh.checkbox.setChecked(selected.contains(account));

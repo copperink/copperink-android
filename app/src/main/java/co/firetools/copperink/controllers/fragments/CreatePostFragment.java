@@ -35,9 +35,9 @@ import co.firetools.copperink.db.DBContract;
 import co.firetools.copperink.db.DBQuery;
 import co.firetools.copperink.models.Account;
 import co.firetools.copperink.models.Post;
-import co.firetools.copperink.services.AccountService;
-import co.firetools.copperink.services.GlobalService;
-import co.firetools.copperink.services.PostService;
+import co.firetools.copperink.clients.AccountClient;
+import co.firetools.copperink.clients.GlobalClient;
+import co.firetools.copperink.clients.PostClient;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -82,10 +82,10 @@ public class CreatePostFragment extends Fragment
         activity.setSupportActionBar(toolbar);
 
         // Load last used account
-        setAccount(AccountService.getLastUsedAccount());
+        setAccount(AccountClient.getLastUsedAccount());
 
         // Focus the Content Text
-        GlobalService.showKeyboard(getActivity(), postContent);
+        GlobalClient.showKeyboard(getActivity(), postContent);
 
         // Allow the user to select another account
         attachAccountSelectorListener();
@@ -111,9 +111,9 @@ public class CreatePostFragment extends Fragment
      */
     private void setAccount(Account account) {
         accountName.setText(account.getName());
-        GlobalService.setImage(accountImage, account.getImageUrl());
+        GlobalClient.setImage(accountImage, account.getImageUrl());
         selectedAccount = account;
-        AccountService.setLastUsedAccount(account);
+        AccountClient.setLastUsedAccount(account);
     }
 
 
@@ -122,7 +122,7 @@ public class CreatePostFragment extends Fragment
      * Set and show the DateTime in View
      */
     private void setDateTime() {
-        postDateTime.setText(PostService.dateToString(selectedDateTime));
+        postDateTime.setText(PostClient.dateToString(selectedDateTime));
     }
 
 
@@ -132,7 +132,7 @@ public class CreatePostFragment extends Fragment
     private void setImage(Image image) {
         selectedImage = image;
         File file = new File(image.getPath());
-        GlobalService.setImage(postImage, file);
+        GlobalClient.setImage(postImage, file);
         postImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         postImage.setElevation(5);
     }
@@ -219,7 +219,7 @@ public class CreatePostFragment extends Fragment
      * OnClickListener to select Accounts
      */
     private void attachAccountSelectorListener() {
-        final ArrayList<Account> accounts = AccountService.getAllAccounts();
+        final ArrayList<Account> accounts = AccountClient.getAllAccounts();
         final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         accountSelector.setOnClickListener(new View.OnClickListener() {
@@ -238,7 +238,7 @@ public class CreatePostFragment extends Fragment
                         ImageView image = (ImageView) root.findViewById(R.id.account_image);
                         Account account = accounts.get(position);
                         name.setText(account.getName());
-                        GlobalService.setImage(image, account.getImageUrl());
+                        GlobalClient.setImage(image, account.getImageUrl());
 
                         return root;
                     }
@@ -285,7 +285,7 @@ public class CreatePostFragment extends Fragment
             DBQuery.insert(new DBContract.PostTable(), post);
             getActivity().onBackPressed();
         } else {
-            GlobalService.showError("Choose a time in the future");
+            GlobalClient.showError("Choose a time in the future");
         }
     }
 

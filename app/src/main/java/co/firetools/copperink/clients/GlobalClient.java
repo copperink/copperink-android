@@ -1,4 +1,4 @@
-package co.firetools.copperink.services;
+package co.firetools.copperink.clients;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,7 @@ import java.io.File;
 import co.firetools.copperink.R;
 import co.firetools.copperink.utils.TinyDB;
 
-public class GlobalService {
+public class GlobalClient {
     private static final String TAG = "CopperInk";
     private static Context context;
     private static TinyDB store;
@@ -70,7 +70,7 @@ public class GlobalService {
      */
     public static TinyDB getStore() {
         if (store == null)
-            store = new TinyDB(GlobalService.getContext());
+            store = new TinyDB(GlobalClient.getContext());
 
         return store;
     }

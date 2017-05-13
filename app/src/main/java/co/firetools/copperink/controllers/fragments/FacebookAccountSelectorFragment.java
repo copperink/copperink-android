@@ -26,8 +26,8 @@ import java.util.HashMap;
 
 import co.firetools.copperink.R;
 import co.firetools.copperink.controllers.adapters.AccountSelectorAdapter;
-import co.firetools.copperink.services.APIService;
-import co.firetools.copperink.services.AccountService;
+import co.firetools.copperink.clients.APIClient;
+import co.firetools.copperink.clients.AccountClient;
 import co.firetools.copperink.utils.SimpleJSON;
 import cz.msebera.android.httpclient.Header;
 
@@ -90,7 +90,7 @@ public class FacebookAccountSelectorFragment extends Fragment {
         RequestParams params = new RequestParams();
         params.put("facebook[token]", token);
 
-        APIService.Auth.POST("/accounts/facebook/list", params, new JsonHttpResponseHandler(){
+        APIClient.Auth.POST("/accounts/facebook/list", params, new JsonHttpResponseHandler(){
             public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
                 try {
                     accounts.addAll(SimpleJSON.getList(data, "accounts"));
@@ -103,7 +103,7 @@ public class FacebookAccountSelectorFragment extends Fragment {
             }
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                 startLoading(false);
-                APIService.handleError(error);
+                APIClient.handleError(error);
             }
         });
     }
@@ -119,9 +119,9 @@ public class FacebookAccountSelectorFragment extends Fragment {
             JSONObject params = new JSONObject();
             params.put("accounts", SimpleJSON.toJSON(adapter.getSelected()));
 
-            APIService.Auth.jsonPOST("/accounts/facebook/save", params, new JsonHttpResponseHandler(){
+            APIClient.Auth.jsonPOST("/accounts/facebook/save", params, new JsonHttpResponseHandler(){
                 public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
-                    AccountService.fetchAccounts(new Runnable() {
+                    AccountClient.fetchAccounts(new Runnable() {
                         @Override
                         public void run() {
                             startLoading(false);
@@ -131,7 +131,7 @@ public class FacebookAccountSelectorFragment extends Fragment {
                 }
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                     startLoading(false);
-                    APIService.handleError(error);
+                    APIClient.handleError(error);
                 }
             });
 
