@@ -25,7 +25,7 @@
     <dimen name="new_post_account_padding">10dp</dimen>
     <dimen name="new_post_content_margin">16dp</dimen>
     <dimen name="new_post_image_margin_top">35dp</dimen>
-    <dimen name="new_post_image_height_min">150dp</dimen>
+    <dimen name="new_post_image_height_size">100dp</dimen>
     <dimen name="new_post_options_text_size">10sp</dimen>
 
     <dimen name="row_account_dialog_height">60dp</dimen>

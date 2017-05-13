@@ -1,6 +1,7 @@
 package co.firetools.copperink.controllers.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -20,30 +21,42 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import co.firetools.copperink.R;
+import co.firetools.copperink.db.DBContract;
+import co.firetools.copperink.db.DBQuery;
 import co.firetools.copperink.models.Account;
+import co.firetools.copperink.models.Post;
 import co.firetools.copperink.services.AccountService;
 import co.firetools.copperink.services.GlobalService;
+
+import static android.app.Activity.RESULT_OK;
 
 public class CreatePostFragment extends Fragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     public CreatePostFragment() { }
 
+    private final static int IMAGE_PICKER_REQUEST_CODE = 10;
+    private final static int MINIMUM_TIME_DIFF = 10000; // ms
     private final static String DATETIME_FORMAT = "hh:mm aaa (MMM d, yyyy)";
     private final static SimpleDateFormat SDF = new SimpleDateFormat(DATETIME_FORMAT);
 
     Toolbar   toolbar;
+    ImageView postImage;
     EditText  postContent;
     TextView  postDateTime;
     TextView  accountName;
     ImageView accountImage;
+    Image     selectedImage;
     Account   selectedAccount;
     Calendar  selectedDateTime;
     LinearLayout timeSelector;
@@ -57,6 +70,7 @@ public class CreatePostFragment extends Fragment
 
         // Initialize Components
         toolbar         = (Toolbar)      root.findViewById(R.id.toolbar);
+        postImage       = (ImageView)    root.findViewById(R.id.post_image);
         postContent     = (EditText)     root.findViewById(R.id.post_content);
         postDateTime    = (TextView)     root.findViewById(R.id.post_datetime);
         accountName     = (TextView)     root.findViewById(R.id.account_name);
@@ -86,6 +100,9 @@ public class CreatePostFragment extends Fragment
         // Allow the user to select custom time
         attachDateTimePicker();
 
+        // Allow the user to select an image
+        attachImageSelectorListener();
+
         return root;
     }
 
@@ -108,6 +125,18 @@ public class CreatePostFragment extends Fragment
      */
     private void setDateTime() {
         postDateTime.setText(SDF.format(selectedDateTime.getTime()));
+    }
+
+
+    /**
+     * Set selected image
+     */
+    private void setImage(Image image) {
+        selectedImage = image;
+        File file = new File(image.getPath());
+        GlobalService.setImage(postImage, file);
+        postImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        postImage.setElevation(5);
     }
 
 
@@ -153,6 +182,36 @@ public class CreatePostFragment extends Fragment
         selectedDateTime.set(Calendar.MINUTE, minute);
         selectedDateTime.set(Calendar.SECOND, second);
         setDateTime();
+    }
+
+
+
+    /**
+     * Listener to select post image
+     */
+    public void attachImageSelectorListener() {
+        postImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImagePicker
+                    .create(CreatePostFragment.this)
+                    .single()
+                    .returnAfterFirst(true)
+                    .showCamera(true)
+                    .imageTitle("Select an Image")
+                    .start(IMAGE_PICKER_REQUEST_CODE);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            ArrayList<Image> images = (ArrayList<Image>) ImagePicker.getImages(data);
+
+            if (images.size() > 0)
+                setImage(images.get(0));
+        }
     }
 
 
@@ -209,6 +268,30 @@ public class CreatePostFragment extends Fragment
 
 
     /**
+     * Save Post
+     */
+    private void savePost() {
+        long timestamp = selectedDateTime.getTimeInMillis();
+        long timediff  = timestamp - Calendar.getInstance().getTimeInMillis();
+
+        if (timediff > MINIMUM_TIME_DIFF) {
+            Post post = new Post(
+                postContent.getText().toString(),
+                selectedAccount.getID(),
+                selectedImage.getPath(),
+                timestamp
+            );
+
+            DBQuery.insert(new DBContract.PostTable(), post);
+            getActivity().onBackPressed();
+        } else {
+            GlobalService.showError("Choose a time in the future");
+        }
+    }
+
+
+
+    /**
      * Render Menu Actions
      */
     @Override
@@ -228,9 +311,8 @@ public class CreatePostFragment extends Fragment
 
             // Done was pressed. Do stuff.
             case R.id.action_done:
-                GlobalService.showToast("Done!");
+                savePost();
                 return true;
-
 
             default:
                 return super.onOptionsItemSelected(item);

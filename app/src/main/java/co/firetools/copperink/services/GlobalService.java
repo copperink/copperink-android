@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 import co.firetools.copperink.R;
 import co.firetools.copperink.utils.TinyDB;
 
@@ -46,6 +48,16 @@ public class GlobalService {
             Picasso
                 .with(iv.getContext())
                 .load(url)
+                .placeholder(R.color.primary)
+                .noFade()
+                .into(iv);
+    }
+
+    public static void setImage(ImageView iv, File file) {
+        if (iv != null && file != null)
+            Picasso
+                .with(iv.getContext())
+                .load(file)
                 .placeholder(R.color.primary)
                 .noFade()
                 .into(iv);

@@ -64,7 +64,7 @@ public class DBQuery {
      * Find by ID
      */
     public static Model findBy(Model.Contract contract, String column, String value) {
-        Cursor cursor = getReadCursor(contract, column + " = ", new String[] { value });
+        Cursor cursor = getReadCursor(contract, column + " = ?", new String[] { value });
         return first(contract, cursor);
     }
 

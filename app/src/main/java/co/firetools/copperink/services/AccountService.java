@@ -36,6 +36,7 @@ public class AccountService {
     public static Account getLastUsedAccount() {
         String id = GlobalService.getStore().getString(KEY_LAST_ACCOUNT_ID);
         DBContract.AccountTable contract = new DBContract.AccountTable();
+        GlobalService.log("Last Selected ID: " + id);
 
         if (id == null || id.isEmpty()) {
             return (Account) DBQuery.first(contract);
