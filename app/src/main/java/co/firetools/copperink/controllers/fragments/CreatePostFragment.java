@@ -283,6 +283,7 @@ public class CreatePostFragment extends Fragment
             );
 
             DBQuery.insert(new DBContract.PostTable(), post);
+            PostClient.uploadPost(post, null);
             getActivity().onBackPressed();
         } else {
             GlobalClient.showError("Choose a time in the future");

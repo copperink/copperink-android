@@ -64,6 +64,15 @@ public class GlobalClient {
     }
 
 
+    /**
+     * Execute callback if valid
+     */
+    public static void executeCallback(Runnable callback) {
+        if (callback != null)
+            callback.run();
+    }
+
+
 
     /**
      * Get a TinyDB instance
@@ -114,5 +123,6 @@ public class GlobalClient {
      */
     public static void showError(String message) {
         showToast("Error: " + message);
+        log("ERROR! -- " + message);
     }
 }

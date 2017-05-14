@@ -1,8 +1,11 @@
 package co.firetools.copperink.clients;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -13,6 +16,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
 import cz.msebera.android.httpclient.entity.StringEntity;
@@ -20,10 +27,14 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class APIClient {
-    private static final String BASE_URL     = "http://copperink.192.168.1.5.xip.io/api/v1";
+    private static final String HOST         = "http://copperink.192.168.1.5.xip.io";
+    private static final String BASE_URL     = HOST + "/api/v1";
     private static final String AUTH_HEADER  = "X-AUTH-TOKEN";
     private static final String CONTENT_TYPE = "application/json";
     private static AsyncHttpClient client    = new AsyncHttpClient();
+
+    public static final String RESOURCE_ACCOUNT = "account";
+    public static final String RESOURCE_POST    = "post";
 
 
     /**
@@ -36,6 +47,13 @@ public class APIClient {
     }
 
 
+    /**
+     * Get full image url for host
+     */
+    public static String imageUrl(String path) {
+        return HOST + path;
+    }
+
 
     /**
      * Handles JSON Error Objects
@@ -47,6 +65,30 @@ public class APIClient {
         } catch (JSONException je) {
             je.printStackTrace();
         }
+    }
+
+
+    /**
+     * Encode an Image from it's path to Base64
+     */
+    public static String encodeImage(String path) {
+        if (path == null || path.isEmpty())
+            return null;
+
+        File imagefile = new File(path);
+        FileInputStream fis = null;
+
+        try {
+            fis = new FileInputStream(imagefile);
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        return "data:image/png;base64," + Base64.encodeToString(b, Base64.DEFAULT);
     }
 
 
@@ -122,6 +164,33 @@ public class APIClient {
             client.removeHeader(AUTH_HEADER);
             client.addHeader(AUTH_HEADER, UserClient.getUser().getToken());
         }
+
+
+//        public static void fetchAll(final Model.Contract contract, final Runnable onFinish) {
+//            final String resource = contract.getTableName();
+//            APIClient.Auth.GET("/" + resource, null, new JsonHttpResponseHandler(){
+//                public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
+//                    DBQuery.deleteAll(contract);
+//
+//                    try {
+//                        JSONArray jsonModels = data.getJSONArray(resource);
+//                        for (int i = 0; i < jsonModels.length(); i++) {
+//                            Model model = model.deserialize(jsonModels.get(i).toString());
+//                            DBQuery.insert(contract, model);
+//                        }
+//                    } catch (JSONException | IOException ex) {
+//                        ex.printStackTrace();
+//                    }
+//
+//                    GlobalClient.executeCallback(onFinish);
+//                }
+//
+//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
+//                    APIClient.handleError(error);
+//                    GlobalClient.executeCallback(onFinish);
+//                }
+//            });
+//        }
     }
 
 }

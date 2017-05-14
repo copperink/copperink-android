@@ -89,12 +89,15 @@ public class AccountClient {
                     ex.printStackTrace();
                 }
 
-                onFinish.run();
+                if (onFinish != null)
+                    onFinish.run();
             }
 
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                 APIClient.handleError(error);
-                onFinish.run();
+
+                if (onFinish != null)
+                    onFinish.run();
             }
         });
     }

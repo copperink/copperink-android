@@ -1,12 +1,21 @@
 package co.firetools.copperink.models;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import co.firetools.copperink.behaviors.Model;
-import co.firetools.copperink.db.DBContract;
 import co.firetools.copperink.clients.PostClient;
 import co.firetools.copperink.clients.UserClient;
+import co.firetools.copperink.db.DBContract;
 
 public class Post implements Model {
     public final static long   DEFAULT_OID = -1;
@@ -37,7 +46,7 @@ public class Post implements Model {
             @JsonProperty("content")    String  content,
             @JsonProperty("author_id")  String  authorId,
             @JsonProperty("account_id") String  accountId,
-            @JsonProperty("image_url")  String  imageUrl,
+            @JsonProperty("image")      String  imageUrl,
             @JsonProperty("post_at")    long    postAt) {
         this(DEFAULT_OID, id, status, content, authorId, accountId, imageUrl, postAt, true);
     }
@@ -96,4 +105,38 @@ public class Post implements Model {
     public Contract getContract() {
         return new DBContract.PostTable();
     }
+
+
+
+    /**
+     * Serializes the Post object into a
+     * JSON String using the Jackson library
+     */
+    public static String serialize(Post post) throws JsonProcessingException {
+        // Serialize using private/public fields only,
+        // ignore everything else (Setters, Getters, etc.)
+        return new ObjectMapper()
+            .setVisibility(PropertyAccessor.ALL,   JsonAutoDetect.Visibility.NONE)
+            .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .writeValueAsString(post);
+    }
+
+
+    /**
+     * Deserializes JSON string back into an Post
+     * object using the Jackson library
+     */
+    public static Post deserialize(String json) throws IOException {
+        return new ObjectMapper().readValue(json, Post.class);
+    }
+
+    public static JSONObject prepareForRequest(Post post) throws JSONException {
+        JSONObject jsonPost = new JSONObject();
+        jsonPost.put("content",    post.getContent());
+        jsonPost.put("post_at",    post.getPostAt());
+        jsonPost.put("account_id", post.getAccountID());
+        jsonPost.put("image",      post.getImageUrl());
+        return jsonPost;
+    }
+
 }
