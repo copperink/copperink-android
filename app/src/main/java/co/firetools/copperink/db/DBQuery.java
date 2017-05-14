@@ -22,7 +22,23 @@ public class DBQuery {
      * Delete all rows for a contract
      */
     public static void deleteAll(Model.Contract contract) {
-        DB.getWritable().delete(contract.getTableName(), null, null);
+        deleteWhere(contract, null, null);
+    }
+
+
+    /**
+     * Delete by given column
+     */
+    public static void deleteBy(Model.Contract contract, String column, String value) {
+        deleteWhere(contract, column + " = ?", new String[] { value });
+    }
+
+
+    /**
+     * Delete with custom query
+     */
+    private static void deleteWhere(Model.Contract contract, String whereSelector, String[] whereValues) {
+        DB.getWritable().delete(contract.getTableName(), whereSelector, whereValues);
     }
 
 
@@ -67,6 +83,7 @@ public class DBQuery {
         Cursor cursor = getCursor(contract, column + " = ?", new String[] { value });
         return first(contract, cursor);
     }
+
 
 
 

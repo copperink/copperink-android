@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import co.firetools.copperink.R;
 import co.firetools.copperink.behaviors.RVEmptyObserver;
 import co.firetools.copperink.behaviors.ToolbarLogoBehavior;
+import co.firetools.copperink.clients.APIClient;
+import co.firetools.copperink.clients.PostClient;
 import co.firetools.copperink.controllers.adapters.PostAdapter;
 import co.firetools.copperink.models.Post;
-import co.firetools.copperink.clients.PostClient;
 
 public class HomeFragment extends Fragment {
     public HomeFragment() { }
@@ -56,17 +57,26 @@ public class HomeFragment extends Fragment {
         adapter = new PostAdapter(posts);
         adapter.registerAdapterDataObserver(new RVEmptyObserver(postList, emptyView));
         postList.setAdapter(adapter);
+        postList.setNestedScrollingEnabled(false);
         postList.setLayoutManager(llm);
 
-        // Load Posts
+        // Load Posts from DB
         loadPosts();
+
+        // Sync with webserver to get latest data
+        PostClient.syncPosts(new Runnable() {
+            @Override
+            public void run() {
+                loadPosts();
+            }
+        });
 
         return root;
     }
 
 
     /**
-     * Load all queued posts
+     * Load all queued posts from DB
      */
     private void loadPosts() {
         posts.clear();

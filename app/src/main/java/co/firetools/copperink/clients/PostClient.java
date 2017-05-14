@@ -23,6 +23,8 @@ import co.firetools.copperink.db.DBQuery;
 import co.firetools.copperink.models.Post;
 import cz.msebera.android.httpclient.Header;
 
+import static co.firetools.copperink.clients.GlobalClient.executeCallback;
+
 public class PostClient {
     private final static String DATETIME_FORMAT = "hh:mm aaa (MMM d, yyyy)";
 
@@ -40,7 +42,7 @@ public class PostClient {
     /**
      * Upload Post
      */
-    public static void uploadPost(Post post, final Runnable onFinish) {
+    public static void uploadPost(final Post post, final Runnable onFinish) {
         try {
             JSONObject params = new JSONObject();
             params.put("post", Post.prepareForRequest(post));
@@ -48,11 +50,23 @@ public class PostClient {
 
             APIClient.Auth.jsonPOST("/posts", params, new JsonHttpResponseHandler(){
                 public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
-                    fetchPosts(onFinish);
+                    try {
+                        JSONObject jsonPost = data.getJSONObject("post");
+                        Post updatedPost = Post.deserialize(jsonPost.toString());
+
+                        Model.Contract contract = new DBContract.PostTable();
+                        GlobalClient.log("UPLOADING: " + post.getOID());
+                        DBQuery.deleteBy(contract, DBContract.COLUMN_OID, Long.toString(post.getOID()));
+                        DBQuery.insert(contract, updatedPost);
+                    } catch (JSONException | IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    GlobalClient.executeCallback(onFinish);
                 }
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                     APIClient.handleError(error);
-                    GlobalClient.executeCallback(onFinish);
+                    executeCallback(onFinish);
                 }
             });
 
@@ -63,7 +77,7 @@ public class PostClient {
 
 
     /**
-     * Fetch all posts
+     * Fetch all posts, clear local db and repopulate
      */
     public static void fetchPosts(final Runnable onFinish){
         APIClient.Auth.GET("/posts", null, new JsonHttpResponseHandler(){
@@ -81,14 +95,46 @@ public class PostClient {
                     ex.printStackTrace();
                 }
 
-                GlobalClient.executeCallback(onFinish);
+                executeCallback(onFinish);
             }
 
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
                 APIClient.handleError(error);
-                GlobalClient.executeCallback(onFinish);
+                executeCallback(onFinish);
             }
         });
+    }
+
+
+    /**
+     * Sync posts with webserver
+     */
+    public static void syncPosts(Runnable onFinish) {
+        if (APIClient.connectedToInternet()) {
+            Model.Contract contract = new DBContract.PostTable();
+            Cursor cursor = DBQuery.getCursor(contract, "synced = ?", new String[] { "0" }, DBContract.COLUMN_POST_AT );
+            ArrayList<Post> posts = (ArrayList<Post>) DBQuery.getAll(contract, cursor);
+            syncPosts(posts, onFinish);
+        } else {
+            executeCallback(onFinish);
+        }
+    }
+
+    private static void syncPosts(ArrayList<Post> posts, final Runnable onFinish) {
+        if (posts.size() == 0) {
+            fetchPosts(onFinish);
+        } else {
+            Post post = posts.get(0);
+            posts.remove(0);
+
+            final ArrayList<Post> rest = posts;
+            uploadPost(post, new Runnable() {
+                @Override
+                public void run() {
+                    syncPosts(rest, onFinish);
+                }
+            });
+        }
     }
 
 

@@ -71,5 +71,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         PostClient.setImage(post, vh.postImage);
         GlobalClient.setImage(vh.accountImage, account.getImageUrl());
+
+        GlobalClient.log("POST: " + post.getOID() + " - " + post.getID());
     }
 }
