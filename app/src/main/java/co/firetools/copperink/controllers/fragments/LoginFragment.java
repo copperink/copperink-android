@@ -16,6 +16,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import co.firetools.copperink.R;
+import co.firetools.copperink.clients.PostClient;
 import co.firetools.copperink.controllers.activities.InitialActivity;
 import co.firetools.copperink.clients.APIClient;
 import co.firetools.copperink.clients.AccountClient;
@@ -134,8 +135,13 @@ public class LoginFragment extends Fragment {
                 AccountClient.fetchAccounts(new Runnable() {
                     @Override
                     public void run() {
-                        startLoading(false);
-                        openMainActivity();
+                        PostClient.fetchPosts(new Runnable() {
+                            @Override
+                            public void run() {
+                                startLoading(false);
+                                openMainActivity();
+                            }
+                        });
                     }
                 });
             }

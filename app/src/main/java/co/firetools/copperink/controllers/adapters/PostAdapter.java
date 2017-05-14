@@ -40,10 +40,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         TextView  postContent;
         ImageView postImage;
         ImageView accountImage;
+        View      layout;
 
         ViewHolder(View root) {
             super(root);
 
+            layout       = (View)      root.findViewById(R.id.row_layout);
             postMeta     = (TextView)  root.findViewById(R.id.post_meta);
             postContent  = (TextView)  root.findViewById(R.id.post_content);
             postImage    = (ImageView) root.findViewById(R.id.post_image);
@@ -59,12 +61,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int position) {
         View root = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_post, viewGroup, false);
         ViewHolder vh = new ViewHolder(root);
-        root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragment.editPost(posts.get(position));
-            }
-        });
         return vh;
     }
 
@@ -73,7 +69,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
      * Required method populate row content
      */
     @Override
-    public void onBindViewHolder(ViewHolder vh, int position) {
+    public void onBindViewHolder(ViewHolder vh, final int position) {
         Post post = posts.get(position);
         Account account = AccountClient.get(post.getAccountID());
 
@@ -83,6 +79,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         PostClient.setImage(post, vh.postImage);
         GlobalClient.setImage(vh.accountImage, account.getImageUrl());
         GlobalClient.log("POST: " + post.getOID() + " - " + post.getID());
+
+        vh.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalClient.log("CLICKED POST: " + posts.get(position).getID() + " - " + posts.get(position).getContent());
+                fragment.editPost(posts.get(position));
+            }
+        });
     }
 
 }

@@ -129,7 +129,7 @@ public class CreatePostFragment extends Fragment implements DatePickerDialog.OnD
             if (image == null || image.isEmpty()) {
                 postImage.setVisibility(View.GONE);
             } else {
-                GlobalClient.setImage(postImage, editPost.getImageUrl());
+                PostClient.setImage(editPost, postImage);
                 postImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 postImage.setElevation(5);
             }

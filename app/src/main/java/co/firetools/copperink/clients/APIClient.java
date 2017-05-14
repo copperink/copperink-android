@@ -27,7 +27,7 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class APIClient {
-    private static final String HOST         = "http://copperink.192.168.1.5.xip.io";
+    private static final String HOST         = "http://128.199.123.168:3000";
     private static final String BASE_URL     = HOST + "/api/v1";
     private static final String AUTH_HEADER  = "X-AUTH-TOKEN";
     private static final String CONTENT_TYPE = "application/json";
