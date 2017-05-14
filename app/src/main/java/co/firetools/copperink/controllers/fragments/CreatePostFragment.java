@@ -41,8 +41,7 @@ import co.firetools.copperink.clients.PostClient;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CreatePostFragment extends Fragment
-        implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class CreatePostFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     public CreatePostFragment() { }
 
     private final static int IMAGE_PICKER_REQUEST_CODE = 10;
@@ -60,6 +59,17 @@ public class CreatePostFragment extends Fragment
     LinearLayout timeSelector;
     LinearLayout accountSelector;
     AppCompatActivity activity;
+
+    boolean editMode = false;
+    Post editPost;
+
+
+    public static CreatePostFragment inEditMode(long postoid){
+        CreatePostFragment cpf = new CreatePostFragment();
+        cpf.editMode = true;
+        cpf.editPost = (Post) DBQuery.findBy(new DBContract.PostTable(), DBContract.COLUMN_OID, Long.toString(postoid));
+        return cpf;
+    }
 
 
     @Override
@@ -98,8 +108,37 @@ public class CreatePostFragment extends Fragment
         // Allow the user to select custom time
         attachDateTimePicker();
 
-        // Allow the user to select an image
-        attachImageSelectorListener();
+
+        // If editing mode
+        if (editMode) {
+            // Use different title
+            activity.getSupportActionBar().setTitle("Edit Post");
+
+            // Use current account
+            setAccount(AccountClient.get(editPost.getAccountID()));
+
+            // Set current status
+            postContent.setText(editPost.getContent());
+
+            // Select existing datetime
+            selectedDateTime = PostClient.timestampToDate(editPost.getPostAt());
+            setDateTime();
+
+            // Select existing image if exists
+            String image = editPost.getImageUrl();
+            if (image == null || image.isEmpty()) {
+                postImage.setVisibility(View.GONE);
+            } else {
+                GlobalClient.setImage(postImage, editPost.getImageUrl());
+                postImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                postImage.setElevation(5);
+            }
+
+        } else {
+            // Allow the user to select an image only in create mode
+            attachImageSelectorListener();
+        }
+
 
         return root;
     }
@@ -268,24 +307,49 @@ public class CreatePostFragment extends Fragment
     /**
      * Save Post
      */
-    private void savePost() {
-        long timestamp = selectedDateTime.getTimeInMillis();
-        long timediff  = timestamp - Calendar.getInstance().getTimeInMillis();
+    private void createPost() {
+        if (dataValidates()) {
+            String imagePath = (selectedImage == null) ? null : selectedImage.getPath();
 
-        String imagePath = (selectedImage == null) ? null : selectedImage.getPath();
-
-        if (timediff > MINIMUM_TIME_DIFF) {
             Post post = new Post(
                 postContent.getText().toString(),
                 selectedAccount.getID(),
                 imagePath,
-                timestamp
+                PostClient.dateToTimestamp(selectedDateTime)
             );
 
             DBQuery.insert(new DBContract.PostTable(), post);
             getActivity().onBackPressed();
+        }
+    }
+
+    private void updatePost() {
+        if (dataValidates()) {
+            Post post = new Post(
+                editPost.getID(),
+                editPost.getStatus(),
+                postContent.getText().toString(),
+                editPost.getAuthorID(),
+                selectedAccount.getID(),
+                editPost.getImageUrl(),
+                PostClient.dateToTimestamp(selectedDateTime),
+                false
+            );
+
+            DBQuery.deleteBy(new DBContract.PostTable(), DBContract.COLUMN_OID, Long.toString(editPost.getOID()));
+            DBQuery.insert(new DBContract.PostTable(), post);
+            getActivity().onBackPressed();
+        }
+    }
+
+    private boolean dataValidates() {
+        long diff = selectedDateTime.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
+
+        if (diff > MINIMUM_TIME_DIFF) {
+            return true;
         } else {
             GlobalClient.showError("Choose a time in the future");
+            return false;
         }
     }
 
@@ -296,7 +360,11 @@ public class CreatePostFragment extends Fragment
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_create_post, menu);
+        if (editMode)
+            inflater.inflate(R.menu.menu_edit_post, menu);
+        else
+            inflater.inflate(R.menu.menu_create_post, menu);
+
         super.onCreateOptionsMenu(menu,inflater);
     }
 
@@ -311,7 +379,15 @@ public class CreatePostFragment extends Fragment
 
             // Done was pressed. Do stuff.
             case R.id.action_done:
-                savePost();
+                if (editMode)
+                    updatePost();
+                else
+                    createPost();
+                return true;
+
+            case R.id.action_delete:
+                PostClient.deletePost(editPost, null);
+                getActivity().onBackPressed();
                 return true;
 
             default:

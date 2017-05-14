@@ -42,7 +42,7 @@ public class PostClient {
     /**
      * Upload Post
      */
-    public static void uploadPost(final Post post, final Runnable onFinish) {
+    public static void createPost(final Post post, final Runnable onFinish) {
         try {
             JSONObject params = new JSONObject();
             params.put("post", Post.prepareForRequest(post));
@@ -74,6 +74,61 @@ public class PostClient {
             ex.printStackTrace();
         }
     }
+
+
+    /**
+     * Update post
+     */
+    public static void updatePost(final Post post, final Runnable onFinish) {
+        try {
+            JSONObject params = new JSONObject();
+            params.put("post", Post.prepareForRequest(post));
+
+            APIClient.Auth.jsonPATCH("/posts/" + post.getID(), params, new JsonHttpResponseHandler(){
+                public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
+                    try {
+                        JSONObject jsonPost = data.getJSONObject("post");
+                        Post updatedPost = Post.deserialize(jsonPost.toString());
+
+                        Model.Contract contract = new DBContract.PostTable();
+                        DBQuery.deleteBy(contract, DBContract.COLUMN_OID, Long.toString(post.getOID()));
+                        DBQuery.insert(contract, updatedPost);
+                    } catch (JSONException | IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    GlobalClient.executeCallback(onFinish);
+                }
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
+                    APIClient.handleError(error);
+                    executeCallback(onFinish);
+                }
+            });
+
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+    /**
+     * Delete post
+     */
+    public static void deletePost(final Post post, final Runnable onFinish) {
+        APIClient.Auth.DELETE("/posts/" + post.getID(), null, new JsonHttpResponseHandler(){
+            public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
+                DBQuery.deleteBy(new DBContract.PostTable(), DBContract.COLUMN_OID, Long.toString(post.getOID()));
+                GlobalClient.executeCallback(onFinish);
+            }
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
+                APIClient.handleError(error);
+                executeCallback(onFinish);
+            }
+        });
+    }
+
+
 
 
     /**
@@ -128,12 +183,15 @@ public class PostClient {
             posts.remove(0);
 
             final ArrayList<Post> rest = posts;
-            uploadPost(post, new Runnable() {
+            Runnable callback = new Runnable() {
                 @Override
                 public void run() {
                     syncPosts(rest, onFinish);
                 }
-            });
+            };
+
+            if      (post.getSyncStatus() == Post.SYNC_TO_CREATE) { createPost(post, callback); }
+            else if (post.getSyncStatus() == Post.SYNC_TO_UPDATE) { updatePost(post, callback); }
         }
     }
 
@@ -162,14 +220,22 @@ public class PostClient {
      * Prints a date in a human readable date
      */
     public static String dateToString(long timestamp) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timestamp);
-        return dateToString(calendar);
+        return dateToString(timestampToDate(timestamp));
     }
     public static String dateToString(Calendar calendar) {
         return dateToString(calendar.getTime());
     }
     public static String dateToString(Date datetime) {
         return new SimpleDateFormat(DATETIME_FORMAT).format(datetime);
+    }
+
+    public static Calendar timestampToDate(long timestamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp * 1000);
+        return calendar;
+    }
+
+    public static long dateToTimestamp(Calendar calendar) {
+        return calendar.getTimeInMillis() / 1000;
     }
 }

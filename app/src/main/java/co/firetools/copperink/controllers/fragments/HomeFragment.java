@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import co.firetools.copperink.R;
 import co.firetools.copperink.behaviors.RVEmptyObserver;
 import co.firetools.copperink.behaviors.ToolbarLogoBehavior;
-import co.firetools.copperink.clients.APIClient;
 import co.firetools.copperink.clients.PostClient;
+import co.firetools.copperink.controllers.activities.MainActivity;
 import co.firetools.copperink.controllers.adapters.PostAdapter;
 import co.firetools.copperink.models.Post;
 
@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         // Set up Recycler View
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         posts = new ArrayList<>();
-        adapter = new PostAdapter(posts);
+        adapter = new PostAdapter(this, posts);
         adapter.registerAdapterDataObserver(new RVEmptyObserver(postList, emptyView));
         postList.setAdapter(adapter);
         postList.setNestedScrollingEnabled(false);
@@ -82,6 +82,15 @@ public class HomeFragment extends Fragment {
         posts.clear();
         posts.addAll(PostClient.whereStatusIs(Post.STATUS_QUEUED));
         adapter.notifyDataSetChanged();
+    }
+
+
+    /**
+     * Edit post
+     */
+    public void editPost(Post post) {
+        CreatePostFragment cpf = CreatePostFragment.inEditMode(post.getOID());
+        ((MainActivity) getActivity()).pushFragment(cpf);
     }
 
 }

@@ -130,8 +130,20 @@ public class APIClient {
             client.post(getAbsoluteURL(path), params, responseHandler);
         }
 
+        public static void PATCH(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+            client.patch(getAbsoluteURL(path), params, responseHandler);
+        }
+
+        public static void DELETE(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+            client.delete(getAbsoluteURL(path), params, responseHandler);
+        }
+
         public static void jsonPOST(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
             client.post(GlobalClient.getContext(), getAbsoluteURL(path), prepareJSONParams(json), CONTENT_TYPE, responseHandler);
+        }
+
+        public static void jsonPATCH(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
+            client.patch(GlobalClient.getContext(), getAbsoluteURL(path), prepareJSONParams(json), CONTENT_TYPE, responseHandler);
         }
     }
 
@@ -155,42 +167,25 @@ public class APIClient {
             Basic.POST(path, params, responseHandler);
         }
 
+        public static void DELETE(String path, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+            authorizeClient();
+            Basic.DELETE(path, params, responseHandler);
+        }
+
         public static void jsonPOST(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
             authorizeClient();
             Basic.jsonPOST(path, json, responseHandler);
+        }
+
+        public static void jsonPATCH(String path, JSONObject json, JsonHttpResponseHandler responseHandler) {
+            authorizeClient();
+            Basic.jsonPATCH(path, json, responseHandler);
         }
 
         private static void authorizeClient() {
             client.removeHeader(AUTH_HEADER);
             client.addHeader(AUTH_HEADER, UserClient.getUser().getToken());
         }
-
-
-//        public static void fetchAll(final Model.Contract contract, final Runnable onFinish) {
-//            final String resource = contract.getTableName();
-//            APIClient.Auth.GET("/" + resource, null, new JsonHttpResponseHandler(){
-//                public void onSuccess(int statusCode, Header[] headers, JSONObject data) {
-//                    DBQuery.deleteAll(contract);
-//
-//                    try {
-//                        JSONArray jsonModels = data.getJSONArray(resource);
-//                        for (int i = 0; i < jsonModels.length(); i++) {
-//                            Model model = model.deserialize(jsonModels.get(i).toString());
-//                            DBQuery.insert(contract, model);
-//                        }
-//                    } catch (JSONException | IOException ex) {
-//                        ex.printStackTrace();
-//                    }
-//
-//                    GlobalClient.executeCallback(onFinish);
-//                }
-//
-//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject error) {
-//                    APIClient.handleError(error);
-//                    GlobalClient.executeCallback(onFinish);
-//                }
-//            });
-//        }
     }
 
 }

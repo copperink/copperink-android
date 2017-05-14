@@ -25,6 +25,10 @@ public class Post implements Model {
     public final static String STATUS_POSTED = "posted";
     public final static String STATUS_ERROR  = "error";
 
+    public final static int SYNC_COMPLETE  = 0;
+    public final static int SYNC_TO_CREATE = 1;
+    public final static int SYNC_TO_UPDATE = 2;
+
     private String  id;
     private String  status;
     private String  content;
@@ -48,7 +52,7 @@ public class Post implements Model {
             @JsonProperty("account_id") String  accountId,
             @JsonProperty("image")      String  imageUrl,
             @JsonProperty("post_at")    long    postAt) {
-        this(DEFAULT_OID, id, status, content, authorId, accountId, imageUrl, postAt, true);
+        this(id, status, content, authorId, accountId, imageUrl, postAt, true);
     }
 
 
@@ -56,7 +60,15 @@ public class Post implements Model {
      * Post constructor - for local creation
      */
     public Post(String content, String accountId, String imagePath, long postAt) {
-        this(DEFAULT_OID, UNSYNCED_ID, "queued", content, UserClient.getUser().getID(), accountId, imagePath, postAt, false);
+        this(UNSYNCED_ID, "queued", content, UserClient.getUser().getID(), accountId, imagePath, postAt, false);
+    }
+
+
+    /**
+     * Post constructor - for local updates
+     */
+    public Post(String id, String status, String content, String authorId, String accountId, String imageUrl, long postAt, boolean synced) {
+        this(DEFAULT_OID, id, status, content, authorId, accountId, imageUrl, postAt, synced);
     }
 
 
@@ -89,6 +101,19 @@ public class Post implements Model {
     public long    getPostAt()    { return postAt;    }
     public long    getOID()       { return oid;       }
     public boolean isSynced()     { return synced;    }
+
+
+    /**
+     * Get sync status
+     */
+    public int getSyncStatus() {
+        if (synced)
+            return SYNC_COMPLETE;
+        else if (id.equals(UNSYNCED_ID))
+            return SYNC_TO_CREATE;
+        else
+            return SYNC_TO_UPDATE;
+    }
 
 
     /**

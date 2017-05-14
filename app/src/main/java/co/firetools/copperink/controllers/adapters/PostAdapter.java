@@ -10,21 +10,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.firetools.copperink.R;
-import co.firetools.copperink.models.Account;
-import co.firetools.copperink.models.Post;
 import co.firetools.copperink.clients.AccountClient;
 import co.firetools.copperink.clients.GlobalClient;
 import co.firetools.copperink.clients.PostClient;
+import co.firetools.copperink.controllers.fragments.HomeFragment;
+import co.firetools.copperink.models.Account;
+import co.firetools.copperink.models.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> posts;
+    private HomeFragment fragment;
 
 
     /**
      * Default Constructor and required method getItemCount()
      */
-    public int getItemCount()            { return posts.size(); }
-    public PostAdapter(List<Post> posts) { this.posts = posts;  }
+    public int getItemCount() { return posts.size(); }
+    public PostAdapter(HomeFragment fragment, List<Post> posts){
+        this.posts = posts;
+        this.fragment = fragment;
+    }
 
 
     /**
@@ -51,9 +56,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
      * Required method to create rows
      */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int position) {
         View root = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_post, viewGroup, false);
         ViewHolder vh = new ViewHolder(root);
+        root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.editPost(posts.get(position));
+            }
+        });
         return vh;
     }
 
@@ -62,7 +73,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
      * Required method populate row content
      */
     @Override
-    public void onBindViewHolder(final ViewHolder vh, int position) {
+    public void onBindViewHolder(ViewHolder vh, int position) {
         Post post = posts.get(position);
         Account account = AccountClient.get(post.getAccountID());
 
@@ -71,7 +82,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         PostClient.setImage(post, vh.postImage);
         GlobalClient.setImage(vh.accountImage, account.getImageUrl());
-
         GlobalClient.log("POST: " + post.getOID() + " - " + post.getID());
     }
+
 }
